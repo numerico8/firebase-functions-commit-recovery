@@ -1,0 +1,2 @@
+
+enum ViewState {Idel, Busy}

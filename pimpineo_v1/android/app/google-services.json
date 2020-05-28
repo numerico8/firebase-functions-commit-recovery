@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1004460162487",
+    "firebase_url": "https://pimpineo-a818d.firebaseio.com",
+    "project_id": "pimpineo-a818d",
+    "storage_bucket": "pimpineo-a818d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004460162487:android:81ca68cdb95712496cbc32",
+        "android_client_info": {
+          "package_name": "com.pimpineo_v1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004460162487-4uaaef0hmt81m805mivci0q5ohl524fb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVeTzVhzvUzm72kpdX83gIXLO3D0pZ32g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004460162487-4uaaef0hmt81m805mivci0q5ohl524fb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
