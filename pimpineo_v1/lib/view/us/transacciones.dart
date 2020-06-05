@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pimpineo_v1/services/enviar_recarga.dart';
 import 'package:pimpineo_v1/services/helpers.dart';
+import 'package:pimpineo_v1/view/us/us_lobby.dart';
 import 'package:pimpineo_v1/viewmodels/transacciones_viewmodel.dart';
 import 'package:pimpineo_v1/widgets/credit_card.dart';
 import 'package:provider_architecture/provider_architecture.dart';
@@ -69,7 +70,10 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  setState(() {
+                    Helpers.lastroute = 'transacciones';
+                  });
+                  Navigator.pushNamed(context, LobbyUS.route);
                 },
               ),
             ),
@@ -170,6 +174,18 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                                    ),
                                    children: <TextSpan>[
                                      TextSpan(text: '\$' +  model.transacciones[index]['cantidad'].toString() ,style: TextStyle(fontStyle: FontStyle.italic))
+                                   ]
+                                 )),
+                               RichText( //confirmation number
+                                 text: TextSpan(
+                                   text: 'No Confirmacion: ',
+                                   style: TextStyle(
+                                     color: Colors.grey[900],
+                                     fontFamily: 'Poppins',
+                                     fontSize: 15,
+                                   ),
+                                   children: <TextSpan>[
+                                     TextSpan(text:model.transacciones[index]['payment_id'].toString().substring(4).toLowerCase() ,style: TextStyle(fontStyle: FontStyle.italic))
                                    ]
                                  )),
                                model.transacciones[index]['type'] == 'Compra de Credito' 

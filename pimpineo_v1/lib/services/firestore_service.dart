@@ -8,7 +8,7 @@ class FirestoreService {
  
   Firestore _firestore = new Firestore();
 
-  //**** read the database and get the user completed
+  ///**** read the database and get the user completed
   Future fetchUserFromDatabase(String uid) async { 
     DocumentSnapshot doc = await _firestore.collection('users').document(uid).get(); 
     if(doc != null){
@@ -20,10 +20,13 @@ class FirestoreService {
   }
   
  
-  //**** call the cloud function in the backend to create a new user when registered
+  ///**** call the cloud function in the backend to create a new user when registered
   Future<String> createFirestoreUserBE(User user) async {
     try {
+      
+      //creating a json to be passed to cloud function
       Map<String,dynamic> usermap = user.toJson(); 
+
       var result = CloudFunctions.instance.getHttpsCallable(functionName: 'createFirestoreUser');
       var result1 = await result.call(usermap).catchError((e){
         return 'error in the Firebase Function.';
@@ -35,21 +38,22 @@ class FirestoreService {
   }
 
 
-  //**** function that request to delete contact from firestore to the backend
-  Future updateContactInUserList(User user) async{
+
+  ///**** function that request to delete contact from firestore to the backend
+  Future<String> updateContactInUserList(User user) async{
     try {
       var function = CloudFunctions.instance.getHttpsCallable(functionName: 'updateContactList');
       var result =  await function.call(user.toJson()).catchError((e){
         return 'error when calling http';
       }); 
-      return result.data;  
+      return result.data.toString();  
     } catch (e) {
       return 'error running firestore service';
     }
   }
 
 
-  //**** function with STRIPE API steps: validate the card, make the payment, save the card and save the record
+  ///**** function with STRIPE API steps: validate the card, make the payment, save the card and save the record
   Future<bool> makePaymentCard(Map<String, dynamic> paymentMethod) async{
     try {
       var function = CloudFunctions.instance.getHttpsCallable(functionName: 'makePaymentCard');
@@ -65,7 +69,7 @@ class FirestoreService {
   }
 
 
-  /// ** function to process the payment of the credit card  */
+  ///**** function to process the payment of the credit card  */
   Future<dynamic> processPaymentCard(Map<String,dynamic> data) async {
     try {
       var function = CloudFunctions.instance.getHttpsCallable(functionName: 'processPaymentCard');
@@ -91,7 +95,7 @@ class FirestoreService {
   }
 
 
-  //****function to request the topup to DT One API
+  ///****function to request the topup to DT One API
   Future<String> enviarRecarga(Map<String,dynamic> data) async {
     try {
       var function = CloudFunctions.instance.getHttpsCallable(functionName: 'enviarRecarga');
@@ -118,7 +122,7 @@ class FirestoreService {
   }
 
 
-  //update the name of the user in firestore
+  ///update the name of the user in firestore
   Future<String> updateUserNombre(String newNombre, String uid) async {
     try {
       await _firestore.collection('users').document(uid).updateData({
@@ -131,8 +135,21 @@ class FirestoreService {
   }
 
 
-  //actualiza el listado de las tranacciones cogiendo un snapshot del documento y pasando el record de transacciones al usuarion local
-  updateListadoTransacciones(User user) async {
+  ///update the phone number of the  user
+  Future<String> updateUserTelefono(String newTelefono, String uid) async {
+    try {
+      await _firestore.collection('users').document(uid).updateData({
+        'telefono' : newTelefono
+      });
+      return 'Success';
+    } catch (e) {
+      return 'Error';
+    }
+  }
+
+
+  ///actualiza el listado de las tranacciones cogiendo un snapshot del documento y pasando el record de transacciones al usuarion local
+  void updateListadoTransacciones(User user) async {
     DocumentSnapshot userDoc = await _firestore.collection('users').document(user.uid).get(); 
     print(userDoc.data);
     user.setTransacciones(userDoc.data['transaction_records']);    
@@ -140,16 +157,25 @@ class FirestoreService {
   }
 
 
-  //coge el listado de precios
+  ///coge el listado de precios
   Future<List<dynamic>> getRecargasPrices() async {
     List<dynamic> pricesList = new List<dynamic>();
-    DocumentSnapshot doc = await _firestore.collection('prices').document('FGZ97LRV8vhmpmo1oTQd').get();
-    pricesList = doc.data['recargas_price'];
+    DocumentSnapshot doc = await _firestore.collection('utilidades').document('prices').get();
+    pricesList = doc.data['recargas_prices'];
     return pricesList;
   }
 
 
-  //elimina una tarjeta de credito salvada en los records en stripe y en la nube nuestra
+  ///toma los terminos y las condiciones del listado de utilidades
+  Future<String> getTermsAndConditions() async {
+    String result;
+    DocumentSnapshot termsAndCond = await _firestore.collection('utilidades').document('terminos_y_condiciones').get();
+    result = termsAndCond.data['terminos_y_condiciones'];
+    return result;
+  }
+
+
+  ///elimina una tarjeta de credito salvada en los records en stripe y en la nube nuestra
   Future<bool> deletePaymentMethod(User user, int index, String pmID) async {
     Map<String,dynamic> data = new Map<String,dynamic>();
     data = {
@@ -168,6 +194,14 @@ class FirestoreService {
     return result.data;    
   }
 
+
+  ///toma la url de la foto del inicio, haya o no haya recarga
+  Future<Map<String,dynamic>> getInitialPicture() async {
+    Map<String,dynamic> result = new Map<String,dynamic>();
+    DocumentSnapshot snapshot = await _firestore.collection('utilidades').document('recarga_picture').get();
+    result = snapshot.data;
+    return result;
+  }
 
 }
   

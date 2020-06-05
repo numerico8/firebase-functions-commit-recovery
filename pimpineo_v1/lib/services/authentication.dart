@@ -13,17 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthenticationService {
 
 
-  //authentication instance
+  ///authentication instance
   final _auth = FirebaseAuth.instance;
 
-  //** aqui se escribe en la base de datos el ususario que esta registrandose o entrando
+  ///aqui se escribe en la base de datos el ususario que esta registrandose o entrando
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
-  //sign in with google instance
+  ///sign in with google instance
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
 
-  //sign in method with email and password
+  ///sign in method with email and password
   Future signIn(String email, String contrasena) async {
     try{
       AuthResult _result = await _auth.signInWithEmailAndPassword(email: email, password: contrasena);
@@ -31,6 +31,12 @@ class AuthenticationService {
         FirebaseUser user = _result.user;
         String uid = user.uid;                             // test uid: 'wRT2GrdR03bJkeglJHcITPTINFE2'
         var _user = await _firestoreService.fetchUserFromDatabase(uid); 
+
+        //toma el anuncio inicial
+        Helpers.initialPicture  = await _firestoreService.getInitialPicture();
+        //para tomar el precio de las recargas
+        Helpers.recargasPrices = await _firestoreService.getRecargasPrices();
+
         Controllers.userStreamController.sink.add(_user);
         return _user;
       }
@@ -44,37 +50,39 @@ class AuthenticationService {
   
 
 
-  //register with email and password that are supposedly already validated
+  ///register with email and password that are already validated
   Future<String> registerUser({
     @required String correo,
     @required String contrasena,
     @required String nombre,
     @required String pais,
     @required String telefono,
-    @required var credito
+    @required var credito,
+    @required Map<String,dynamic> contactos
   }) async {
 
     String result;
     bool error = false;
+    bool agreeTermsAndCond = Helpers.agreeTermsAndCond;
 
     var _result = await _auth.createUserWithEmailAndPassword(email: correo, password: contrasena).catchError((e){
       print(e);
       error = true;
     });
     if(error){return 'Ocurrio un error creando el usuario. Es comun que el error se deba a que el usuario ya existe.';}
-
+    
     FirebaseUser fbuser = _result.user;
 
     try {
-      //*********************creation of the contactos list
-      Map<String,dynamic> contactos = {};
+      //*********creation of the payments object
       Map<String,dynamic> payments = {
         'stripe_id' : '',
         'payment_methods' : [],
         'payment_in_process' : {}
       };
 
-      User _user = User(  //we cannot use to json since we have more than one type needed to create the user **uid
+
+      User _user = User(  //we cannot use tojson method since we have more than one type needed to create the user **uid
           uid: fbuser.uid,
           correo: correo,
           nombre: nombre,
@@ -82,12 +90,19 @@ class AuthenticationService {
           telefono: telefono, 
           credito: credito, 
           contactos: contactos,
-          payments: payments
+          payments: payments,
+          termsAndCond: agreeTermsAndCond.toString()
       );
-
+      
       result = await _firestoreService.createFirestoreUserBE(_user); //devuelve el stripe id creado con la funcion en el cloud
       
       if(!result.contains('error')){
+        
+        //para el anuncio inicial
+        Helpers.initialPicture  = await _firestoreService.getInitialPicture();
+        //para tomar el precio de las recargas
+        Helpers.recargasPrices = await _firestoreService.getRecargasPrices();
+
         Controllers.userStreamController.sink.add(_user);
         _user.payments['stripe_id'] = result; //pone el resultado del id de stripe en la data del cliente
         return 'Exitosamente registrado.';
@@ -103,31 +118,36 @@ class AuthenticationService {
   
 
 
-  //check if there is an user logged in at this time
+  ///check if there is an user logged in at this time
    Future<bool> isUserLoggedIn() async{
      var user = await _auth.currentUser();
      //si hay un usuarion loggeado entonces entra a la pagina directamente
      if(user != null){
        String uid = user.uid;                            
        var _user = await _firestoreService.fetchUserFromDatabase(uid); 
+       //para el anuncio inicial
+       Helpers.initialPicture  = await _firestoreService.getInitialPicture();
+       //para tomar el precio de las recargas
+       Helpers.recargasPrices = await _firestoreService.getRecargasPrices();
+
        Controllers.userStreamController.sink.add(_user);
      }
      return user != null; //check if user is not equal to null as the return value
    } 
    
 
-  //sign out
+  ///sign out
   void signOut() async {   //closing stream controller just in case
     await _auth.signOut();
   }
 
 
-  //googleAccount.email, googleAccount.email.split('@')[0] + '1234' , googleAccount.displayName , 'us' , '', 0
-  Future<String> signInGoogle() async {
+  ///googleAccount.email, googleAccount.email.split('@')[0] + '1234' , googleAccount.displayName , 'us' , '', 0
+  Future<String> signInGoogle(Map<String,dynamic> contactos) async {
     String result;
     GoogleSignInAccount account = await _googleSignIn.signIn();
     if(account != null){
-      result = await registerUser(correo: account.email, contrasena: account.email.split('@')[0] + '1234', nombre: account.displayName, pais: 'us', telefono: '', credito: 0);
+      result = await registerUser(correo: account.email, contrasena: account.email.split('@')[0] + '1234', nombre: account.displayName, pais: 'us', telefono: '', credito: 0,contactos: contactos);
       if(result.contains('registrado')){
         await _auth.sendPasswordResetEmail(email: account.email);
         //guardar el usuario en los sharedpreferences
@@ -142,7 +162,7 @@ class AuthenticationService {
   }
 
   
-  //este es para el proceso del olvido de la contrasena
+  ///este es para el proceso del olvido de la contrasena
   Future<bool> olvidoContrasena(String email) async {
     bool result = true;
     await _auth.sendPasswordResetEmail(email: email).catchError((error){

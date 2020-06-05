@@ -18,22 +18,20 @@ const stripe = new Stripe(functions.config().key.secret , {apiVersion: '2020-03-
 export const createFirestoreUser = functions.https.onCall(async (data) => {
 
         console.log('Creating new user'); // TO DELETE
-               
+
         //stripe creation of a customer with th email as soon as the user is registering the first time
-        try {
-        
-          
         //creating the customer in stripe
-            const stripe_customer = await stripe.customers.create({
-                name : data['nombre'],
-                email : data['correo'],
-                phone : data['telefono'],
-            })
+        const stripe_customer = await stripe.customers.create({
+            name : data['nombre'],
+            email : data['correo'],
+            phone : data['telefono'],
+        })
 
-            const customer_id = stripe_customer.id;
-            console.log(stripe_customer.id);
-
-
+        const customer_id = stripe_customer.id;
+        console.log(stripe_customer.id);
+               
+        
+        try { 
         // object to pass to the user when created in the system
         /**Update customer stripe_id after creted in Stripe API*/
             const payments = {
@@ -41,6 +39,7 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
                 payment_methods : [],
                 payment_in_process : {},
             } //check how to update only one field in firestore 
+
 
 
         // creating the customer in firestore
@@ -53,11 +52,14 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
                 'nombre' : data['nombre'],
                 'payments' : payments,
                 'contactos' : data['contactos'],
+                'accepted_termsAndCond': data['termsAndCond'],
                 'transaction_records' : []
-            },{merge : true}).then(()=>{
+            },{merge : true}).then((val)=>{
+                console.log(val.writeTime + 'User succesfully created.')
                 return 'successfull'
-            }).catch((e) => {
+            }).catch(async (e) => {
                 console.log(e)
+                await stripe.customers.del(customer_id)
                 return 'error'
             });
 
@@ -65,6 +67,7 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
  
         } catch (error) {
             console.log(error);
+            await stripe.customers.del(customer_id)
             return 'function error'
         }
         
@@ -74,13 +77,14 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
 // this is directly updtaing the user in the application local then calls this function and delete contact in the firestore
 export const updateContactList = functions.https.onCall(async (data) => {
     console.log('Update contact list requested.');
-    admin.firestore().collection('users').doc(data['uid']).update({
+    const result = admin.firestore().collection('users').doc(data['uid']).update({
         'contactos' : data['contactos'],
     })
     .catch((e) => {
        console.log(e);
-       return 'Error';
+       return 'error';
     }); 
+    return result;
 });
 
 
@@ -146,9 +150,9 @@ export const makePaymentCard = functions.https.onCall(async (data) => {
           'cantidad' : data['amount']/100, 
           'timestamp' : payment.created,
           'credito': data['credito'],
-          'pago_id' : payment.id,
-          'tarjeta_usada_id' : payment.payment_method,
-          'tarjeta_usada_fingerprint' : paymentMethod.card?.fingerprint,
+          'payment_id' : payment.id,
+          'payment_method' : payment.payment_method,
+          'card_fingerprint' : paymentMethod.card?.fingerprint,
           'payment_status' : payment.status,
           'idemKey' : idemKey,
       } 

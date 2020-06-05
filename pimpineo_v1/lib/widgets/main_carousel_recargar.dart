@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pimpineo_v1/model/contactos_model.dart';
+import 'package:pimpineo_v1/services/formatter.dart';
+import 'package:pimpineo_v1/services/locator.dart';
+import 'package:pimpineo_v1/services/validator.dart';
 import 'package:pimpineo_v1/view/base_view.dart';
 import 'package:pimpineo_v1/view/us/comprar_credito.dart';
 import 'package:pimpineo_v1/viewmodels/contacts_viewmodel.dart';
@@ -21,12 +24,21 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
     @override
   void initState() {
     super.initState();
+    myController.text = '+53-5-';
   } 
+  
+  final TextEditingController myController = new TextEditingController();
+  
+  //this is to keep track of the phone number being updated
+  bool numberIsWrong = false;
 
+  //key to check if the new phone is valid 
+  final GlobalKey<FormState> textValid = new GlobalKey<FormState>(); 
 
+  //list of prices pullewd from the database in the cloud
   List<String> _prices = new List<String>(); 
- 
 
+  
   //lista de los contactos que hay que recargar
   List<Map<String,dynamic>> listaRecargar = new List<Map<String,dynamic>>();
   
@@ -72,24 +84,26 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
             ),
             height: 400.0,
             width: 360.0,
-            child: Consumer<ListaContactosModel>(
-              builder: (context, lists, child) {
-                return ListView.separated(//Lista 
-                separatorBuilder: (context, index){ //separator container
-                  return Center(
-                    child: Container(
-                      color: Colors.green,
-                      height: 2.0,
-                      width: 330.0,
-                    ),
-                  );             
-                },
-                itemCount: lists.nombredisplay.length + 1,
-                itemBuilder: (BuildContext context, index) {
-                      return index == 0 ? _searchBar(lists) :  _listItem(index-1, lists);
-                }
-              );
-              }, 
+            child: StatefulBuilder(
+              builder: (context, setState) => Consumer<ListaContactosModel>(
+                builder: (context, lists, child) {
+                  return ListView.separated(//Lista 
+                  separatorBuilder: (context, index){ //separator container
+                    return Center(
+                      child: Container(
+                        color: Colors.grey[400],
+                        height: 1.0,
+                        width: 330.0,
+                      ),
+                    );             
+                  },
+                  itemCount: lists.nombredisplay.length + 1,
+                  itemBuilder: (BuildContext context, index) {
+                        return index == 0 ? _searchBar(lists) :  _listItem(index-1, lists, model);
+                  }
+                );
+                }, 
+              ),
             )
             ),
           Padding(   //Raised button to Enviar Recarga
@@ -462,7 +476,7 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
   }
 
   
-  
+  //algortimo para la barra de busqueda
   _searchBar(ListaContactosModel lists){
     return Row(
       children: <Widget>[
@@ -506,8 +520,8 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
   }
 
 
-  
-  _listItem( index , ListaContactosModel lists) {
+  //creacion de la lista de items 
+  _listItem( index , ListaContactosModel lists, ContactsViewModel model) {
 
     //this is in order to get the correct value to show in the list
     String tel;
@@ -517,11 +531,40 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
       }
     });
     return ListTile(      //partes de las listas
-      onTap: (){
+      dense: true,
+      onTap: () async {
+
+        String digitsNeeded = tel.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
+        if(digitsNeeded.length > 4){
+          digitsNeeded = digitsNeeded.substring(0,4);
+        }
+        
+        if((lists.contactos[tel]['isSelected'] == false)&&(digitsNeeded != '+535')){
+          setState(() {
+            numberIsWrong = true; //set this variable to true letting know the system that there is a number wrong
+          });
+          //crear el ui para poner el telefono correctamente si el detecta que el telefono es incorrecto
+          await showModalBottomSheet(
+            isScrollControlled: true,
+            shape:RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+            isDismissible: false, context: context, 
+            builder: (context){
+              return _fixPhoneNumberBeforeSend(tel, context, model);
+          });
+        }
+        
+        //si el numero fue corregido entonces lo selecciona o esta correcto tambuien lo selecciona
+        if((numberIsWrong == false)&&(tel.substring(0,4) == '+535')&&(tel.length > 10)){
           setState(() {
             lists.contactos[tel]['isSelected'] = !lists.contactos[tel]['isSelected'];
           });
-        },
+        }else{ // tuve que poner esto porque una vez que pone la bandera numberIsWrong a true no me permite actualizar ningun otro item de la lista asi el numero este conrrecto
+          setState(() {
+            numberIsWrong = false;
+          });
+        }
+        
+      },
       leading: IconButton(
         icon: lists.contactos[tel]['isSelected'] == false ? Icon(Icons.check_box_outline_blank, color: Colors.grey[200],) : Icon(Icons.check,color: Colors.green,size: 30,), 
         onPressed: (){
@@ -538,13 +581,13 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
         lists.nombredisplay[index],
         style: TextStyle(
             fontFamily: 'Poppins',
-            fontSize: 18.0,
+            fontSize: 16.0,
             fontWeight: FontWeight.w600,
             color: Colors.grey[800]),
       ),
       subtitle: Text( // telefono
         lists.telefonos[index],
-        style: TextStyle(fontFamily: 'Sen', fontSize: 18.0),
+        style: TextStyle(fontFamily: 'Roboto', fontSize: 14.0, color: Colors.grey[900]),
       ),
     );
   }
@@ -575,5 +618,97 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
       });
   }
   
+
+
+  //showdialog that will fix the numbers
+  Widget _fixPhoneNumberBeforeSend(String tel, BuildContext context, ContactsViewModel model){
+    
+    final UserValidator _validator = locator<UserValidator>();   
+    myController.selection = TextSelection.fromPosition(TextPosition(offset: myController.text.length));
+    
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, left: 15,right: 15,bottom: 25),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Center(child: Text( //Modificar Contacto
+              'Modificar Contacto',
+              style: TextStyle(fontFamily: 'Poppins',fontSize: 22,color: Colors.grey[800]),
+            ),),
+            SizedBox(height:10),
+            Center(child: Text( //mensaje del fomato no valido
+              'El formato del numero $tel no es valido, por favor modifique el numero para continuar.',
+              style: TextStyle(fontFamily: 'Poppins',fontSize: 16, color: Colors.grey[800] ),
+              maxLines: 3,
+            ),),
+            SizedBox(height:10),
+            Padding( // telefono
+              padding: const EdgeInsets.symmetric(horizontal:20.0),
+              child: Form(
+                key: textValid,
+                child: TextFormField( // telefono
+                  controller: myController,
+                  //initialValue: '+53-5-',
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                  ),
+                  style: TextStyle(fontFamily: 'Poppins'),
+                  inputFormatters: [TextFormatter(
+                      separator: '-',
+                      mask: 'xxx-x-xxx-xxxx',
+                    )
+                  ],
+                  onChanged: (value){
+                    final val = TextSelection.collapsed(offset:myController.text.length+1); 
+                    myController.selection = val;
+                    myController.text = value;          
+                  },
+                  validator: _validator.validatePhone,
+                  keyboardType: TextInputType.phone,
+                ),
+              ),
+            ),                                      
+            SizedBox(height:20),
+            Padding(  //boton salvar
+              padding: EdgeInsets.only(bottom:MediaQuery.of(context).viewInsets.bottom),
+              child: FlatButton( //boton salvar
+                padding: EdgeInsets.symmetric(horizontal: 80),
+                color: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)
+                ),
+                onPressed: () async {
+                  if(textValid.currentState.validate()){
+                      String result;
+                      result = await model.updateContact(context,myController.text.replaceAll('-', ''),tel);
+                      if(!result.contains('error')){
+                        Navigator.pop(context);
+                        setState(() {
+                          //renew the lists in the widget
+                          model.getListas(context);
+                          numberIsWrong = false;
+                        });
+                      }else{
+                        showDialog( //contacto con ese numero ya existe
+                          context: context,
+                          builder: (context){
+                            return CustomAlertDialogs(
+                              selection: 13,
+                              text: result,
+                            );
+                        });
+                      }
+                  }
+                },
+                child: Icon(Icons.save_alt, color: Colors.white,)
+              ),
+            )                                  
+          ],
+        ),
+      ),
+    );
+  }
+
 
 }

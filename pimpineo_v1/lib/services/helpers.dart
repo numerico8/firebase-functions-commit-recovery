@@ -16,6 +16,8 @@ class Helpers{
     return completed = true;
   }
 
+  static bool agreeTermsAndCond = false;
+
   static String lastroute = '';
 
   static bool clienteAgreed = false;
@@ -86,6 +88,7 @@ class Helpers{
         
 
     newRecord = {
+      'payment_id' : DateTime.now().millisecondsSinceEpoch,
       'credito' : user.credito,
       'cantidad' : double.parse(cantidad.toStringAsFixed(2)),
       'telefonosRecargados' : contactosRecargados,
@@ -103,7 +106,14 @@ class Helpers{
 
 
   }
+     
+  static Map<String,dynamic> initialPicture = {
+    'hay_recarga' : false,
+    'url' : '',
+  };
+    
+  static List<dynamic> recargasPrices = ['10','20','30','40','60'];
+  
 
-
-}
+  }
 

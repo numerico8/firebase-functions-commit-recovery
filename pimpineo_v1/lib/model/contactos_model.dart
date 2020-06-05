@@ -25,7 +25,7 @@ class ListaContactosModel extends ChangeNotifier {
  }
 
 
-
+//toma la lista de contactos
  void listaDeContactos(Map<String,dynamic> contactos) {
    this.contactos = contactos;
    //make sure that contact list has value
@@ -70,7 +70,7 @@ class ListaContactosModel extends ChangeNotifier {
       'municipio' : municipio,
       'provincia' : provincia,
       'isSelected' : false,
-      'selectedAmount' : '20(+40)'
+      'selectedAmount' : '20'
       };
       this.contactos[telefono] = contactoNuevo;
       //refresh the list for the provider with the new contact included

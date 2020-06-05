@@ -51,7 +51,7 @@ class UserValidator {
     if(value.isEmpty){
       return "Introduzca su numero telefonico.";
     }
-    else if(value.length != 11 && !expression.hasMatch(value) && value.startsWith('1')) {
+    else if(value.length != 11 || !expression.hasMatch(value) || !value.startsWith('1')) {
       return "Siga el formato, ejemplo: +1-305-123-1234.";
     } 
     return null;
@@ -107,6 +107,9 @@ class UserValidator {
   }
   
   String validatePhone(String value){
+    if(value.length == 0){
+      return 'Introduzca un numero de telefono.';
+    }
     String value1 = value.replaceAll('-', '').replaceAll('+', '');
     var length;
     String pattern;
@@ -128,7 +131,7 @@ class UserValidator {
       return "Introduzca el numero de telefono del contacto.";
     }
     else if(!(value1.length == length) || (!expression.hasMatch(value1)) || !(value[0] == '+')) {
-      return "CUBA: (+53-5-1231234)\nUS: (+1-123-123-1234)";
+      return "(+53-5-1231234)/(+1-123-123-1234)";
     } 
     else{
       return null;

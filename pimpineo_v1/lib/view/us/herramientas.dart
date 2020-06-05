@@ -65,7 +65,7 @@ class _HerramientasUIState extends State<HerramientasUI> {
                     color: Colors.grey[200],
                     height: 50.0, 
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0,),
                       child: Text(
                         'Metodos de Pago Salvados: ',
                         style: TextStyle(
@@ -76,17 +76,16 @@ class _HerramientasUIState extends State<HerramientasUI> {
                       ),
                     ),
                   ),
-                  Container( //Metodos de pago list
-                    height: MediaQuery.of(context).size.height * listHeightRate, //asi es como se recoge la lista dentro del container
-                    alignment: Alignment.centerLeft,
+                  Container(
                     color: Colors.white,
-                    child: Padding(
+                    child: Padding(  //listado de las tarjetas de credito
                       padding: const EdgeInsets.symmetric(horizontal: 5.0,),
                       child: ListView.builder(
                         shrinkWrap: true, 
                         itemCount: model.paymentMethods.length,
                         itemBuilder: (context,index){
-                          return ListTile(
+                          return ExpansionTile(
+                            backgroundColor: Colors.white,
                             title: model.paymentMethods[index],
                             trailing: FlatButton.icon(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -124,7 +123,7 @@ class _HerramientasUIState extends State<HerramientasUI> {
                     color: Colors.grey[200],
                     height: 50.0, 
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Text(
                         'Eliminar Usuario Salvado: ',
                         style: TextStyle(

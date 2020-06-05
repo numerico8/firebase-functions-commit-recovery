@@ -7,7 +7,6 @@ import 'package:pimpineo_v1/view/base_view.dart';
 import 'package:pimpineo_v1/view/login.dart';
 import 'package:pimpineo_v1/view/us/us_lobby.dart';
 import 'package:pimpineo_v1/viewmodels/registrarse_us_view_model.dart';
-import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
 
 
 class RegistrarseUS extends StatefulWidget {
@@ -32,6 +31,9 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
 
   //validation service
   UserValidator _validator = UserValidator();
+
+  //agreed terms and conditions
+  bool agreeTermsAndConditions = false;
   
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
           appBar: AppBar(
             leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
-              onPressed: (){Navigator.pushNamed(context, LogIn.route);},
+              onPressed: (){Navigator.pushNamedAndRemoveUntil(context, LogIn.route ,  (Route<dynamic> route) => false);},
               color: Colors.blue[800],
               iconSize: 28,
             ),
@@ -235,7 +237,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 highlightColor: Colors.white,
                                 onPressed: () async {
                                  if(_formKey.currentState.validate()){
-                                   var _result = await model.registerUserButton(this._correo, this._contrasena, this._nombre, this.pais, this._telefono, this._credito);
+                                   var _result = await model.registerUserButton(context,this._correo, this._contrasena, this._nombre, this.pais, this._telefono, this._credito);
                                    if(_result.contains('registrado')){ //la palabra registrado no viene del modelo sino del authenticationservice
                                      Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route,  (Route<dynamic> route) => false);
                                    }
@@ -277,7 +279,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 highlightColor: Colors.white,
                                 onPressed: () async {
                                   String result;
-                                  result = await model.registrarseConGoogle();
+                                  result = await model.registrarseConGoogle(context);
                                   if(result.contains('registrado')){
                                     showDialog(barrierDismissible: false,context: context,builder: (context) =>  customAlert(text: 'Revise la bandeja de entrada de su correo GMAIL, click el enlace y cree su contrasena Pimpineo.',));
                                   }else{

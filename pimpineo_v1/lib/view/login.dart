@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:pimpineo_v1/services/locator.dart';
 import 'package:pimpineo_v1/services/validator.dart';
 import 'package:pimpineo_v1/services/viewstate.dart';
-import 'package:pimpineo_v1/view/base_view.dart';
-import 'package:pimpineo_v1/view/us/registrarse_us.dart';
+import 'package:pimpineo_v1/view/us/terminos_y_condiciones.dart';
 import 'package:pimpineo_v1/viewmodels/login_viewmodel.dart';
 import 'package:pimpineo_v1/widgets/log_in_form.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
+import 'package:provider_architecture/provider_architecture.dart';
 
 class LogIn extends StatefulWidget {
   static const String route = '/log_in';
@@ -57,11 +57,14 @@ class _LogInState extends State<LogIn> {
   
   @override
   Widget build(BuildContext context) {
-    return BaseView<LogInModel>(
-      builder: (context, model, child) {
-       if(isUserFieldTapped == false){
+    return ViewModelProvider<LogInModel>.withConsumer(
+      viewModel: LogInModel(),
+      onModelReady: (model){
+        if(isUserFieldTapped == false){
          getInitialEmail(model);
-       }
+        }
+      },
+      builder: (context, model, child) {
        return SafeArea(
         child: Scaffold(
               backgroundColor: Colors.white,
@@ -102,7 +105,7 @@ class _LogInState extends State<LogIn> {
                       children: <Widget>[
                         SizedBox(height: 30.0),
                         model.state == ViewState.Busy
-                        ? Padding(
+                        ? Padding(   //circular porgresss indicator 
                           padding: const EdgeInsets.only(top: 60.0),
                           child: Container(
                             height: 80,
@@ -240,7 +243,7 @@ class _LogInState extends State<LogIn> {
                                   },
                                 tapregistrarsecallback: () { //registration flags
                                   //navigate to register from the us
-                                  Navigator.pushNamed(context, RegistrarseUS.route);
+                                  Navigator.pushNamed(context, TermsAndCond.route);
                                 },
                                 isSelected: _isSelected,
                                 radiocallback: () {

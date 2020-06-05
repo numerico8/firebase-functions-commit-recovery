@@ -12,7 +12,6 @@ import 'package:pimpineo_v1/widgets/my_drawer.dart';
 
 class LobbyUS extends StatefulWidget {
   static const String route = '/lobby_us';
- // GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   _LobbyUSState createState() => _LobbyUSState();
@@ -101,6 +100,11 @@ class _LobbyUSState extends State<LobbyUS> {
           Helpers.lastroute = '';
         });
         return this.showSnackBar('Gracias por su compra!!');
+      }else if(Helpers.lastroute == 'transacciones'){
+        setState(() {
+          Helpers.lastroute = '';
+        });
+        return;
       }
       return this.showSnackBar("Bienvenid@ a Pimpineo.");
     });
@@ -188,7 +192,6 @@ class _LobbyUSState extends State<LobbyUS> {
   }
 
 
-
   Widget myDashboard(context){ //this is where all lists are built
     return AnimatedPositioned(
       top: _iscollapsed ? 0 : 0.1 * screenHeight,
@@ -203,9 +206,9 @@ class _LobbyUSState extends State<LobbyUS> {
         elevation: 6.0,
         child: ListView( //where all lists are built
           padding: EdgeInsets.symmetric(vertical: 10.0),
-                children: <Widget>[
-                  SizedBox(height: 10.0), //with this space we can put something on the top
-                  Padding(            //this are the carousel selectors
+            children: <Widget>[
+              SizedBox(height: 10.0), //with this space we can put something on the top
+              Padding(            //this are the carousel selectors
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Row(      //this are the carousel selectors
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -216,8 +219,8 @@ class _LobbyUSState extends State<LobbyUS> {
                           .toList(),
                     ),
                   ),
-                  SizedBox(height:10.0),
-                  Center(            //linea debajo del menu horizontal 
+              SizedBox(height:10.0),
+              Center(            //linea debajo del menu horizontal 
                     child: Container(
                       width: 390.0,
                       height: 2.0,
@@ -226,11 +229,11 @@ class _LobbyUSState extends State<LobbyUS> {
                       ),
                     ),
                   ), 
-                  SizedBox(height:10.0),
-                  _maincarousel[
-                      _mainCarouselIndex], //THIS IS THE PART TO SELECT THE MAINCAROUSEL VIEW
-                ],
-              ),
+              SizedBox(height:10.0),
+              _maincarousel[
+                  _mainCarouselIndex], //THIS IS THE PART TO SELECT THE MAINCAROUSEL VIEW
+            ],
+          ),
       ),
     );
   }

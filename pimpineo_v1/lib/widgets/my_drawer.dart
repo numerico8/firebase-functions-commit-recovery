@@ -4,6 +4,7 @@ import 'package:pimpineo_v1/services/locator.dart';
 import 'package:pimpineo_v1/model/user.dart';
 import 'package:pimpineo_v1/services/animation_service.dart';
 import 'package:pimpineo_v1/view/login.dart';
+import 'package:pimpineo_v1/view/us/drawer_term_and_cond.dart';
 import 'package:pimpineo_v1/view/us/herramientas.dart';
 import 'package:pimpineo_v1/view/us/profile_page.dart';
 import 'package:pimpineo_v1/viewmodels/us_lobby_model.dart';
@@ -85,7 +86,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 5.0),
                       child: FlatButton(
-                        splashColor: Colors.white,
+                        highlightColor: Colors.white,
+                        splashColor: Colors.blue[100],
                         onPressed: (){ Navigator.of(context).push(animation.createRoute(ProfilePage()));},
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,6 +124,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 5.0),
                       child: FlatButton(
+                        highlightColor: Colors.white,
+                        splashColor: Colors.blue[100],
                         onPressed: (){
                          Navigator.of(context).push(animation.createRoute(HerramientasUI()));
                         },
@@ -158,6 +162,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       )
                     ),
                     child: FlatButton(
+                      highlightColor: Colors.white,
+                      splashColor: Colors.blue[100],
                       onPressed: (){},
                       child: Padding(
                         padding: EdgeInsets.only(left: 5.0),
@@ -196,7 +202,11 @@ class _MyDrawerState extends State<MyDrawer> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 5.0),
                       child: FlatButton(
-                        onPressed: (){},
+                        highlightColor: Colors.white,
+                        splashColor: Colors.blue[100],
+                        onPressed: (){
+                          Navigator.pushNamed(context, DrawerTermsAndCond.route);
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -223,6 +233,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 5.0),
                       child: FlatButton(
+                        highlightColor: Colors.white,
+                        splashColor: Colors.blue[100],
                         onPressed: (){
                           widget.model.logout();
                           Navigator.pushNamedAndRemoveUntil(context, LogIn.route,  (Route<dynamic> route) => false);

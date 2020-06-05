@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pimpineo_v1/view/launch_page.dart';
 import 'package:pimpineo_v1/view/login.dart';
+import 'package:pimpineo_v1/view/us/drawer_term_and_cond.dart';
+import 'package:pimpineo_v1/view/us/terminos_y_condiciones.dart';
 import 'package:pimpineo_v1/view/us/comprar_credito.dart';
 import 'package:pimpineo_v1/view/no_connection.dart';
 import 'package:pimpineo_v1/view/us/profile_page.dart';
@@ -32,6 +34,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => TransaccionesUI());
       case NoConnection.route:
         return MaterialPageRoute(builder: (_) => NoConnection());
+      case TermsAndCond.route:
+        return MaterialPageRoute(builder: (_) => TermsAndCond());
+      case DrawerTermsAndCond.route:
+        return MaterialPageRoute(builder: (_) => DrawerTermsAndCond());
     }
     return MaterialPageRoute(builder: (_) => Scaffold(
       backgroundColor: Colors.white,

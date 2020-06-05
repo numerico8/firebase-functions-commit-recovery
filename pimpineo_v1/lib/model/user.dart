@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 class User extends ChangeNotifier {
   
-  User({this.uid, this.nombre, this.telefono, this.correo, this.pais, this.credito,this.contactos,this.payments,this.transacciones});
+  User({this.uid, this.nombre, this.telefono, this.correo, this.pais, this.credito,this.contactos,this.payments,this.transacciones, this.termsAndCond});
 
   String uid;
   String pais;
@@ -16,6 +16,7 @@ class User extends ChangeNotifier {
   Map<String,dynamic> payments;
   List<dynamic> transacciones = [];
   var credito;
+  String termsAndCond;
   
   
   //initializing the user with some data
@@ -32,6 +33,7 @@ class User extends ChangeNotifier {
     credito = data['credito'],
     payments = data['payments'],
     contactos = data['contactos'],
+    termsAndCond = data['accepted_termsAndCond'],
     transacciones = data['transaction_records'];
 
 
@@ -47,7 +49,8 @@ class User extends ChangeNotifier {
       'credito' : credito,
       'contactos' : contactos,
       'payments' : payments,
-      'transaction_records' : transacciones
+      'transaction_records' : transacciones,
+      'termsAndCond' : termsAndCond
     };
   }
 
@@ -102,6 +105,10 @@ class User extends ChangeNotifier {
 
   updateName(String newName){
     this.nombre = newName;
+  }
+
+  updateTelefono(String newTelefono){
+    this.telefono = newTelefono;
   }
 
   updateEmail(String newCorreo){

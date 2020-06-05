@@ -102,8 +102,8 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                       separatorBuilder: (context, index) {     //separator container      
                         return Center(
                           child: Container(
-                            color: Colors.lightBlue[200],
-                            height: 2.0,
+                            color: Colors.grey[400],
+                            height: 1.0,
                             width: 330.0,
                           ),
                         );
@@ -119,243 +119,241 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                   onPressed: () {  // accion de crear el nuevo contacto 
                     showModalBottomSheet( 
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))
                       ),
                       isScrollControlled: true,
                       context: context, 
                       builder: (context){
                         return StatefulBuilder(
-                          builder: (context,setState) => Container(
-                            padding: EdgeInsets.symmetric(horizontal:25.0,vertical: 25.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0) ,topRight: Radius.circular(15.0))
-                            ),
-                            child: Form(
-                              key: _newContactFormKey,
-                              child: Column( 
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text( //crear contacto label
-                                    'Crear Contacto',
-                                    style: TextStyle(
-                                      color: Colors.grey[800],
-                                      fontFamily: 'Poppins',
-                                      fontSize: 22.0
-                                    ),
-                                  ),
-                                  TextFormField( //nombre
-                                    onChanged: (value){
-                                      this.nombre = value;
-                                    },
-                                    validator: _validator.validateNombreContacto,
-                                    keyboardType: TextInputType.text,
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins'
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: 'Nombre',
-                                      hintStyle: TextStyle(
-                                        fontFamily: 'Poppins'
-                                      )
-                                    ),
-                                  ),
-                                  Row( //phone number
-                                    children: <Widget>[
-                                      Expanded( //telefono field
-                                        flex: 4,
-                                        child: TextFormField( // telefono
-                                          controller: _phoneFieldController,
-                                          style: TextStyle(fontFamily: 'Poppins'),
-                                          inputFormatters:  selectedCountry == 'CU'
-                                          ?[
-                                            TextFormatter(
-                                              separator: '-',
-                                              mask: 'xxx-x-xxx-xxxx',
-                                            )
-                                          ]
-                                          :[
-                                            TextFormatter(
-                                              separator: '-',
-                                              mask: 'xx-xxx-xxx-xxxx',
-                                            )
-                                          ],
-                                          onChanged: (value){
-                                            this.telefono = value.replaceAll('-', '');
-                                          },
-                                          validator: _validator.validatePhone,
-                                          keyboardType: TextInputType.phone,),
+                          builder: (context,setState) => Form(
+                            key: _newContactFormKey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: SingleChildScrollView(
+                                child: Column( 
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text( //crear contacto label
+                                      'Crear Contacto',
+                                      style: TextStyle(
+                                        color: Colors.grey[800],
+                                        fontFamily: 'Poppins',
+                                        fontSize: 22.0
                                       ),
-                                      SizedBox(width: 10,),
-                                      Expanded( //select pais button
-                                        flex: 2,
-                                        child: Padding( //botones para elegir el pais
-                                          padding: const EdgeInsets.only(top:8.0),
-                                          child: SizedBox(
-                                            height: 50,
-                                            width: 120,
-                                            child: ButtonBar(
-                                              buttonPadding: EdgeInsets.all(1),
-                                              children: <Widget>[
-                                                Container( //CUBA BOTON
-                                                  width: 50,
-                                                  child: RaisedButton(
-                                                    splashColor: Colors.transparent,
-                                                    elevation: selectedCountry == 'CU' ?1 :0,
-                                                    color: selectedCountry == 'CU'  ?Colors.green :Colors.grey[300],
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8),topLeft: Radius.circular(8)),
-                                                    ),
-                                                    onPressed: (){
-                                                      setState(() {
-                                                        selectedCountry = 'CU';
-                                                        controllerInitialValue = '+53-5-';
-                                                        _textEditingControllerListener();
-                                                         });
-                                                    }, 
-                                                    child: Text(
-                                                      'CU',
+                                    ),
+                                    TextFormField( //nombre
+                                      onChanged: (value){
+                                        this.nombre = value;
+                                      },
+                                      validator: _validator.validateNombreContacto,
+                                      keyboardType: TextInputType.text,
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins'
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: 'Nombre',
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Poppins'
+                                        )
+                                      ),
+                                    ),
+                                    Row( //phone number
+                                      children: <Widget>[
+                                        Expanded( //telefono field
+                                          flex: 4,
+                                          child: TextFormField( // telefono
+                                            controller: _phoneFieldController,
+                                            style: TextStyle(fontFamily: 'Poppins'),
+                                            inputFormatters:  selectedCountry == 'CU'
+                                            ?[
+                                              TextFormatter(
+                                                separator: '-',
+                                                mask: 'xxx-x-xxx-xxxx',
+                                              )
+                                            ]
+                                            :[
+                                              TextFormatter(
+                                                separator: '-',
+                                                mask: 'xx-xxx-xxx-xxxx',
+                                              )
+                                            ],
+                                            onChanged: (value){
+                                              this.telefono = value.replaceAll('-', '');
+                                            },
+                                            validator: _validator.validatePhone,
+                                            keyboardType: TextInputType.phone,),
+                                        ),
+                                        SizedBox(width: 10,),
+                                        Expanded( //select pais button
+                                          flex: 2,
+                                          child: Padding( //botones para elegir el pais
+                                            padding: const EdgeInsets.only(top:8.0),
+                                            child: SizedBox(
+                                              height: 50,
+                                              width: 120,
+                                              child: ButtonBar(
+                                                buttonPadding: EdgeInsets.all(1),
+                                                children: <Widget>[
+                                                  Container( //CUBA BOTON
+                                                    width: 50,
+                                                    child: RaisedButton(
+                                                      splashColor: Colors.transparent,
+                                                      elevation: selectedCountry == 'CU' ?1 :0,
+                                                      color: selectedCountry == 'CU'  ?Colors.green :Colors.grey[300],
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8),topLeft: Radius.circular(8)),
+                                                      ),
+                                                      onPressed: (){
+                                                        setState(() {
+                                                          selectedCountry = 'CU';
+                                                          controllerInitialValue = '+53-5-';
+                                                          _textEditingControllerListener();
+                                                           });
+                                                      }, 
+                                                      child: Text(
+                                                        'CU',
+                                                        style: TextStyle(
+                                                          color:selectedCountry == 'CU'?Colors.white:Colors.grey[400],
+                                                          fontSize: 18,
+                                                          fontFamily: 'Poppins'
+                                                      ),)
+                                                  )),                                          
+                                                  Container( //US BOTON
+                                                    width: 50,
+                                                    child: RaisedButton(
+                                                      splashColor: Colors.transparent,
+                                                      elevation:  selectedCountry == 'US' ?1 :0,
+                                                      color: selectedCountry == 'US'  ?Colors.green :Colors.grey[300],
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(8) ,topRight: Radius.circular(8)),
+                                                      ),
+                                                      onPressed: (){
+                                                        setState(() {
+                                                          selectedCountry = 'US';
+                                                          controllerInitialValue = '+1-';
+                                                          _textEditingControllerListener(); 
+                                                        });
+                                                      }, 
+                                                      child: Text('US',
                                                       style: TextStyle(
-                                                        color:selectedCountry == 'CU'?Colors.white:Colors.grey[400],
+                                                        color:selectedCountry == 'US'?Colors.white:Colors.grey[400],
                                                         fontSize: 18,
                                                         fontFamily: 'Poppins'
-                                                    ),)
-                                                )),                                          
-                                                Container( //US BOTON
-                                                  width: 50,
-                                                  child: RaisedButton(
-                                                    splashColor: Colors.transparent,
-                                                    elevation:  selectedCountry == 'US' ?1 :0,
-                                                    color: selectedCountry == 'US'  ?Colors.green :Colors.grey[300],
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(8) ,topRight: Radius.circular(8)),
-                                                    ),
-                                                    onPressed: (){
-                                                      setState(() {
-                                                        selectedCountry = 'US';
-                                                        controllerInitialValue = '+1-';
-                                                        _textEditingControllerListener(); 
-                                                      });
-                                                    }, 
-                                                    child: Text('US',
-                                                    style: TextStyle(
-                                                      color:selectedCountry == 'US'?Colors.white:Colors.grey[400],
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins'
-                                                    ),)
-                                                )),
-                                                ]
+                                                      ),)
+                                                  )),
+                                                  ]
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  TextFormField( //direccion
-                                    onChanged: (value){
-                                      this.direccion = value;
-                                    },
-                                    keyboardType: TextInputType.text,
-                                    validator: _validator.direccion,
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins'
+                                        )
+                                      ],
                                     ),
-                                    decoration: InputDecoration(
-                                      hintText: 'Direccion',
-                                      hintStyle: TextStyle(
+                                    TextFormField( //direccion
+                                      onChanged: (value){
+                                        this.direccion = value;
+                                      },
+                                      keyboardType: TextInputType.text,
+                                      //validator: _validator.direccion,
+                                      style: TextStyle(
                                         fontFamily: 'Poppins'
-                                      )
-                                    ),
-                                  ),
-                                  TextFormField(  //municipio
-                                    onChanged: (value){
-                                      this.municipio = value;
-                                    },
-                                    keyboardType: TextInputType.text,
-                                    validator: _validator.municipio,
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins'
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: selectedCountry == 'CU'
-                                      ?'Municipio'
-                                      :'Ciudad',
-                                      hintStyle: TextStyle(
-                                        fontFamily: 'Poppins'
-                                      )
-                                    ),
-                                  ),
-                                  TextFormField( // provincia
-                                    onChanged: (value){
-                                      this.provincia = value;
-                                    },
-                                    keyboardType: TextInputType.text,
-                                    validator: _validator.provincia,
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins'
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: selectedCountry == 'CU' 
-                                      ?'Provincia'
-                                      :'Estado, ZIP',
-                                      hintStyle: TextStyle(
-                                        fontFamily: 'Poppins'
-                                      )
-                                    ),
-                                  ),
-                                  SizedBox(height:15.0),
-                                  Padding(  //boton salvar
-                                    padding: EdgeInsets.only(bottom:MediaQuery.of(context).viewInsets.bottom),
-                                    child: Container(
-                                      height: 35.0,
-                                      width: 150.0,
-                                      child: FlatButton( //boton salvar
-                                        color: Colors.green,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(5.0)
-                                        ),
-                                        onPressed: (){
-                                          if(_newContactFormKey.currentState.validate()){
-                                            String result = model.crearContacto(nombre,  telefono,  direccion,  municipio, provincia, context);
-                                            if(result.contains('existe')){ //significa que el contacto ya existe
-                                              showDialog( //contacto con ese numero ya existe
-                                              context: context,
-                                              builder: (context){
-                                                return CustomAlertDialogs(
-                                                  selection: 13,
-                                                  text: result,
-                                                );
-                                              });
-                                            } else {
-                                              Navigator.pop(context);
-                                            }
-                                          } else { //error creando el contacto
-                                            showDialog( // usuario mando la forma con errores y no valido bien
-                                              context: context,
-                                              builder: (context){
-                                                return CustomAlertDialogs(
-                                                  selection: 13,
-                                                  text: 'Por favor corrija los errores mostrados.',
-                                                );
-                                              });
-                                          }
-                                          _textEditingControllerListener(); //called the listener so it reloads back the CU data ('+53-5-)
-                                        },
-                                         child: Icon(Icons.save_alt, color: Colors.white,)
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: 'Direccion (no requerido)',
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Poppins'
+                                        )
                                       ),
                                     ),
-                                  )
-                                ],
+                                    TextFormField(  //municipio
+                                      onChanged: (value){
+                                        this.municipio = value;
+                                      },
+                                      keyboardType: TextInputType.text,
+                                      //validator: _validator.municipio,
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins'
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: selectedCountry == 'CU'
+                                        ?'Municipio (no requerido)'
+                                        :'Ciudad',
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Poppins'
+                                        )
+                                      ),
+                                    ),
+                                    TextFormField( // provincia
+                                      onChanged: (value){
+                                        this.provincia = value;
+                                      },
+                                      keyboardType: TextInputType.text,
+                                      //validator: _validator.provincia,
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins'
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: selectedCountry == 'CU' 
+                                        ?'Provincia (no requerido)'
+                                        :'Estado, ZIP',
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Poppins'
+                                        )
+                                      ),
+                                    ),
+                                    SizedBox(height:15.0),
+                                    Padding(  //boton salvar
+                                      padding: EdgeInsets.only(bottom:MediaQuery.of(context).viewInsets.bottom),
+                                      child: Container(
+                                        height: 35.0,
+                                        width: 150.0,
+                                        child: FlatButton( //boton salvar
+                                          color: Colors.green,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0)
+                                          ),
+                                          onPressed: () async {
+                                            if(_newContactFormKey.currentState.validate()){
+                                              String result = await model.crearContacto(nombre,  telefono,  direccion,  municipio, provincia, context);
+                                              if(result.contains('existe')){ //significa que el contacto ya existe
+                                                showDialog( //contacto con ese numero ya existe
+                                                context: context,
+                                                builder: (context){
+                                                  return CustomAlertDialogs(
+                                                    selection: 13,
+                                                    text: result,
+                                                  );
+                                                });
+                                              } else {
+                                                Navigator.pop(context);
+                                              }
+                                            } else { //error creando el contacto
+                                              showDialog( // usuario mando la forma con errores y no valido bien
+                                                context: context,
+                                                builder: (context){
+                                                  return CustomAlertDialogs(
+                                                    selection: 13,
+                                                    text: 'Por favor corrija los errores mostrados.',
+                                                  );
+                                                });
+                                            }
+                                            _textEditingControllerListener(); //called the listener so it reloads back the CU data ('+53-5-)
+                                          },
+                                           child: Icon(Icons.save_alt, color: Colors.white,)
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),                
+                            ),
                           ),
                         );
                       }
                     );                       
                     },
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0)),
                   child: Row( //boton de crear contacto
@@ -364,14 +362,14 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                     children: <Widget>[
                       Icon(
                         Icons.group_add,
-                        color: Theme.of(context).primaryColor,
+                        color:Colors.white,
                         size: 28.0,
                       ),
                       SizedBox(width: 10.0),
                       Text(
                         'Crear Contacto',
                         style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.white,
                             fontFamily: 'Sen',
                             fontSize: 20.0,
                             fontWeight: FontWeight.w600),
@@ -443,6 +441,7 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
     });
 
     return ListTile(        //aqui estan los iconos de la lista de contactos UI    
+           dense: true,
            onTap: (){ //tap listview action
              setState(() {
                lists.contactos[tel]['isSelected'] = !lists.contactos[tel]['isSelected'];
@@ -453,13 +452,13 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
              lists.nombredisplay[index], 
              style: TextStyle(
                 fontFamily: 'Poppins',
-                fontSize: 18.0,
+                fontSize: 16.0,
                 fontWeight: FontWeight.w600,
                 color: Colors.grey[800]),
            ),
           subtitle: Text( // telefono
             lists.telefonos[index],
-            style: TextStyle(fontFamily: 'Sen', fontSize: 18.0),
+            style: TextStyle(fontFamily: 'Roboto', fontSize: 14.0, color: Colors.grey[900]),
           ),
           trailing: GestureDetector( // tap delete icon action 
             onTap: (){ // tap delete icon alert dialog

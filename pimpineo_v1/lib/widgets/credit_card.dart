@@ -7,6 +7,7 @@ import 'package:pimpineo_v1/services/locator.dart';
 import 'package:pimpineo_v1/services/validator.dart';
 import 'package:pimpineo_v1/services/viewstate.dart';
 import 'package:pimpineo_v1/view/base_view.dart';
+import 'package:pimpineo_v1/view/us/transacciones.dart';
 import 'package:pimpineo_v1/view/us/us_lobby.dart';
 import 'package:pimpineo_v1/viewmodels/tarjeta_credito_model.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
@@ -736,13 +737,13 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                                      var result;
                                      model.setState(ViewState.Busy);
                                      result = await paymentLogic(context, model, user, 'saved');
-                                     print(result.toString() + '1');
                                      if(result){
                                        setState(() {
                                          Helpers.fromComprarPage = false;
                                          Helpers.lastroute = 'recargas';
                                          model.setState(ViewState.Idel);
                                        });
+                                       await transaccionExistosa(context);
                                        Navigator.pushNamedAndRemoveUntil(context , LobbyUS.route, (Route<dynamic> route) => false );
                                      }
                                      model.setState(ViewState.Idel);
@@ -778,7 +779,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
 
 
 
-//function con la inteligencia de los botones de 'Comprar'
+///function con la inteligencia de los botones de 'Comprar'
   Future<dynamic> paymentLogic(BuildContext context, TarjetaCreditoModel model, User user, String cardType) async {
 
        bool result;
@@ -879,7 +880,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
 
 
   
-//function para poner el candado o el switch
+///function para poner el candado o el switch
   bool switchStatus(User user){
     if((_fromComprarCredito == true)||(user.credito == 0)){
       return false; //pon el candado
@@ -889,7 +890,56 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
     }
   }
 
+
   
+///function para sacar el cartel de que la transaccion fue exitosa
+  transaccionExistosa(BuildContext context) async {
+    return await showGeneralDialog(
+      context: context, 
+      pageBuilder: (context,a1,a2){
+        //Future.delayed(Duration(seconds: 6),(){Navigator.pop(context);});
+        final curvedValue = Curves.bounceIn.transform(a1.value);
+        return Transform(
+          origin: Offset(1,5),
+          transform: Matrix4.translationValues(1.0, curvedValue, 1.0),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.check, color:Colors.green,size: 60,),
+                  SizedBox(height: 5),
+                  Text('La transaccion ha sido existosa.', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins'),),
+                  SizedBox(height: 5),
+                  Text('Gracias por su compra!', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins'),),
+                  SizedBox(height: 5),
+                  Text('Equipo de Pimpineo', style: TextStyle(color: Colors.blue[800],fontFamily: 'Pacifico',fontSize: 20),), 
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: (){Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route , (Route<dynamic> route) => false);},
+                        child: Text('Inicio', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins',decoration:TextDecoration.underline,))),
+                      SizedBox(width: 5,),
+                      GestureDetector(
+                        onTap: (){Navigator.pushNamedAndRemoveUntil(context, TransaccionesUI.route , (Route<dynamic> route) => false);},
+                        child: Text('No. Confirmacion', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins',decoration:TextDecoration.underline,))),
+                    ],
+                  ),
+                  
+                ],
+              ),
+          ),
+        );
+      },
+      transitionDuration: Duration(milliseconds: 200),
+      barrierDismissible: true,
+      barrierLabel: '',
+      useRootNavigator: true
+    );
+  }
 
 
 
