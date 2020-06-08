@@ -73,7 +73,7 @@ class _TermsAndCondState extends State<TermsAndCond> {
                      controller: controller,
                      child: Text(
                        termsAndCond,
-                       style: TextStyle(fontFamily: 'Poppins'),)),
+                       style: TextStyle(fontFamily: 'Solway'),)),
                  ),
                ),
                ListTile( //acepta terminos y condiciones

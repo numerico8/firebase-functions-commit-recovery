@@ -51,29 +51,29 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
               },
             ),
           ),
-          body: SingleChildScrollView(
-            child: Container( //container con el teclado completo
-              padding: EdgeInsets.all(12),
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              color:Colors.blue[700],
+          body: Container(            
+            padding: EdgeInsets.all(12),
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            color:Colors.blue[700],
+            child: SingleChildScrollView(                  
               child: Column( // Columna con toda la vista
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children: <Widget>[                                
                   SizedBox(height: 10),
                   Container( //container con el numero del credito seleccionado para agregar que se esta agregando solamente
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.blue[800],
-                        borderRadius: BorderRadius.circular(10),
-                        //border: Border.all(color: Colors.blue[800], width: 4.0)
-                      ),
-                    child: Center(child: Text('\$'+ totalAPagar,style: 
-                      TextStyle(fontFamily: 'Sen',color:Colors.white,
-                      fontSize: totalAPagar.length < 7 ? 80 : 50, //si el numero del total a pagar es muy grande entonces cambia el tamano de la variable
-                        ),maxLines: 1,)),
-                  ),
+                  height: 100,
+                  decoration: BoxDecoration(
+                      color: Colors.blue[800],
+                      borderRadius: BorderRadius.circular(10),
+                      //border: Border.all(color: Colors.blue[800], width: 4.0)
+                    ),
+                  child: Center(child: Text('\$'+ totalAPagar,style: 
+                    TextStyle(fontFamily: 'Sen',color:Colors.white,
+                    fontSize: totalAPagar.length < 7 ? 80 : 50, //si el numero del total a pagar es muy grande entonces cambia el tamano de la variable
+                      ),maxLines: 1,)),
+                ),
                   SizedBox(height: 20,),
                   Container(
                     height: 380,
@@ -432,7 +432,7 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
                   Center( //boton de comprar
                     child: FlatButton(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),                        
-                      padding: EdgeInsets.symmetric(horizontal: 125, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 100, vertical: 5),
                       color: Colors.blue[800],
                       child: Text('Comprar', style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: 26),),
                       onPressed: (){

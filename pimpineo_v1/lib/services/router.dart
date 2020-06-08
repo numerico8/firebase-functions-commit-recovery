@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pimpineo_v1/view/launch_page.dart';
 import 'package:pimpineo_v1/view/login.dart';
+import 'package:pimpineo_v1/view/us/drawer_contact_us.dart';
 import 'package:pimpineo_v1/view/us/drawer_term_and_cond.dart';
 import 'package:pimpineo_v1/view/us/terminos_y_condiciones.dart';
 import 'package:pimpineo_v1/view/us/comprar_credito.dart';
@@ -38,6 +39,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => TermsAndCond());
       case DrawerTermsAndCond.route:
         return MaterialPageRoute(builder: (_) => DrawerTermsAndCond());
+      case ContactUS.route:
+        return MaterialPageRoute(builder: (_) => ContactUS());
     }
     return MaterialPageRoute(builder: (_) => Scaffold(
       backgroundColor: Colors.white,

@@ -4,6 +4,7 @@ import 'package:pimpineo_v1/services/locator.dart';
 import 'package:pimpineo_v1/model/user.dart';
 import 'package:pimpineo_v1/services/animation_service.dart';
 import 'package:pimpineo_v1/view/login.dart';
+import 'package:pimpineo_v1/view/us/drawer_contact_us.dart';
 import 'package:pimpineo_v1/view/us/drawer_term_and_cond.dart';
 import 'package:pimpineo_v1/view/us/herramientas.dart';
 import 'package:pimpineo_v1/view/us/profile_page.dart';
@@ -22,6 +23,8 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   
   AnimationService animation = locator<AnimationService>();
+  double drawerWidth = 260.0;
+  double drawerHeight = 60.0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container( //Profile avatar que va a ser un circulo con la inicial del ususario en este y abajo el numero de telefono del usuario
-                    width: 260, 
+                    width: drawerWidth, 
                     height: 170, 
                     decoration: BoxDecoration(
                       border: Border(
@@ -72,8 +75,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                   ),
                   Container( //el perfil entero del usuario y si por alguna calualidad este quiere cambiaqr algo 
-                    width: 260, 
-                    height: 60, 
+                    width: drawerWidth, 
+                    height: drawerHeight, 
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -110,8 +113,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     )
                   ),
                   Container( //Configuracion
-                    width: 260, 
-                    height: 60, 
+                    width: drawerWidth, 
+                    height: drawerHeight,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -150,8 +153,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     )
                   ),
                   Container( //Contactarnos
-                    width: 260, 
-                    height:60,
+                    width: drawerWidth, 
+                    height:drawerHeight,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -164,7 +167,9 @@ class _MyDrawerState extends State<MyDrawer> {
                     child: FlatButton(
                       highlightColor: Colors.white,
                       splashColor: Colors.blue[100],
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.of(context).push(animation.createRoute(ContactUS()));
+                      },
                       child: Padding(
                         padding: EdgeInsets.only(left: 5.0),
                         child: Row(
@@ -188,8 +193,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     )
                   ),
                   Container( //Terminos y condiciones
-                    width: 260, 
-                    height:60,
+                    width: drawerWidth, 
+                    height:drawerHeight,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -205,7 +210,7 @@ class _MyDrawerState extends State<MyDrawer> {
                         highlightColor: Colors.white,
                         splashColor: Colors.blue[100],
                         onPressed: (){
-                          Navigator.pushNamed(context, DrawerTermsAndCond.route);
+                          Navigator.of(context).push(animation.createRoute(DrawerTermsAndCond()));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,8 +233,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     )
                   ),
                   Container( //Salir de la aplication 
-                    width: 260, 
-                    height:60, 
+                    width: drawerWidth, 
+                    height:drawerHeight, 
                     child: Padding(
                       padding: EdgeInsets.only(left: 5.0),
                       child: FlatButton(

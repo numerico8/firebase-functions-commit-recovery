@@ -534,7 +534,12 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
       dense: true,
       onTap: () async {
 
+        setState(() {
+          numberIsWrong = false;
+        });
+
         String digitsNeeded = tel.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
+        
         if(digitsNeeded.length > 4){
           digitsNeeded = digitsNeeded.substring(0,4);
         }
@@ -553,8 +558,11 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
           });
         }
         
+        print(digitsNeeded);
+        print(numberIsWrong);
+
         //si el numero fue corregido entonces lo selecciona o esta correcto tambuien lo selecciona
-        if((numberIsWrong == false)&&(tel.substring(0,4) == '+535')&&(tel.length > 10)){
+        if((numberIsWrong == false)&&(digitsNeeded == '+535')&&(tel.length > 9)){
           setState(() {
             lists.contactos[tel]['isSelected'] = !lists.contactos[tel]['isSelected'];
           });

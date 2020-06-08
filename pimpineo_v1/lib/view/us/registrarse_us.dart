@@ -34,6 +34,9 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
 
   //agreed terms and conditions
   bool agreeTermsAndConditions = false;
+
+  //Main container box height
+  double boxHeight = 560.0;
   
   @override
   Widget build(BuildContext context) {
@@ -41,9 +44,12 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
       builder: (context, model, child) => SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            leading: IconButton(
+            leading: IconButton( //button to go back
               icon: Icon(Icons.arrow_back_ios),
-              onPressed: (){Navigator.pushNamedAndRemoveUntil(context, LogIn.route ,  (Route<dynamic> route) => false);},
+              onPressed: (){
+                model.setState(ViewState.Idel);
+                Navigator.pushNamedAndRemoveUntil(context, LogIn.route ,  (Route<dynamic> route) => false);
+              },
               color: Colors.blue[800],
               iconSize: 28,
             ),
@@ -99,7 +105,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                     SizedBox(height: 10.0),
                     Container(
                       width: double.infinity,
-                      height: 560.0,
+                      height: boxHeight,
                       decoration: BoxDecoration( //box shadow with the registration form
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10.0),

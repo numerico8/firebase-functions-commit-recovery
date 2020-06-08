@@ -5,15 +5,18 @@ import 'package:pimpineo_v1/view/launch_page.dart';
 import 'package:pimpineo_v1/services/router.dart';
 import 'package:provider/provider.dart';
 import 'package:pimpineo_v1/services/providers.dart' as providers;
+import 'package:pimpineo_v1/services/size_config.dart';
+import 'package:pimpineo_v1/services/app_theme.dart';
+
 
 
 void main(){
   setuplocator(); //here we declare the locator tha will help us to instanciate all the other classes and the view models
   WidgetsFlutterBinding.ensureInitialized(); //so you ensure that the app is initialized
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]) //sets the device orientation to be only portrait 
-  .then((_)=>runApp(MyApp())); //once it is loaded it runs the app since this is an async function.
-  
+  .then((_)=>runApp(MyApp())); //once it is loaded it runs the app since this is an async function.  
 } 
+
 
 class MyApp extends StatelessWidget{
  
@@ -21,17 +24,18 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: providers.provider,
-      child: MaterialApp(
-        initialRoute: LaunchPage.route, //it can ve instantiated like that since is static variable
-        onGenerateRoute: Router.generateRoute,
-        debugShowCheckedModeBanner: false,
-        title: 'Pimpineo',
-        theme: ThemeData(
-          primaryColor: Colors.blue[800],
-          accentColor: Colors.lightBlue[100],
-          scaffoldBackgroundColor: Colors.white,
-        ),
-        home: MyHomePage(title: 'Pimpineo'),
+      child: LayoutBuilder(
+        builder: (context, constraints){
+          SizeConfig().init(constraints);
+          return  MaterialApp(
+            initialRoute: LaunchPage.route, //it can ve instantiated like that since is static variable
+            onGenerateRoute: Router.generateRoute,
+            debugShowCheckedModeBanner: false,
+            title: 'Pimpineo',
+            theme: AppTheme.theme,
+            home: MyHomePage(title: 'Pimpineo'),
+          );
+        }
       ),
     );
   }

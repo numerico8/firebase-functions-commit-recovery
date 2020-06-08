@@ -72,7 +72,7 @@ class _DrawerTermsAndCondState extends State<DrawerTermsAndCond> {
                    child: SingleChildScrollView(
                      child: Text(
                        termsAndCond,
-                       style: TextStyle(fontFamily: 'Poppins'),)),
+                       style: TextStyle(fontFamily: 'Solway'),)),
                  ),
                ),
                ListTile( //acepta terminos y condiciones

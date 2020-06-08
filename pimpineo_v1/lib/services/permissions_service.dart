@@ -23,13 +23,18 @@ class PermissionService {
       }
     }
 
+    //TODO when finish testing remove this
     print(currentStatus);
 
     if(currentStatus){
       Iterable<Contact> contacts = await ContactsService.getContacts();
-      contacts.forEach((contact){
-        print(contact.phones.elementAt(0).value);
-        listaModel.crearContacto(contact.displayName, contact.phones.elementAt(0).value ,'', '', '');
+      contacts.forEach((contact){  
+        if(contact.phones.isNotEmpty){
+          if((contact.phones.elementAt(0).value != null)){
+            print(contact.phones.elementAt(0).value);
+            listaModel.crearContacto(contact.displayName, contact.phones.elementAt(0).value ,'', '', '');
+          }
+        }
       });
       newList = listaModel.contactos;
       await this.updateListaDeContacto(newList, context);

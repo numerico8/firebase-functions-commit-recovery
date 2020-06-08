@@ -703,6 +703,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                                                Helpers.lastroute = 'recargas';
                                                model.setState(ViewState.Idel);                                               
                                              });
+                                             await transaccionExistosa(context);
                                              Navigator.pushNamedAndRemoveUntil(context , LobbyUS.route, (Route<dynamic> route) => false );
                                            }
                                            model.setState(ViewState.Idel);

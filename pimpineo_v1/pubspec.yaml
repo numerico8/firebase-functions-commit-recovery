@@ -36,8 +36,8 @@ dependencies:
   contacts_service: ^0.4.6
   permission_handler: ^5.0.0+hotfix.6
   google_sign_in: ^4.5.1
+  url_launcher: ^5.4.10
   
-
   
 
 
