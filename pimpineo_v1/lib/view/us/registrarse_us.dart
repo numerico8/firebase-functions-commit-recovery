@@ -7,6 +7,9 @@ import 'package:pimpineo_v1/view/base_view.dart';
 import 'package:pimpineo_v1/view/login.dart';
 import 'package:pimpineo_v1/view/us/us_lobby.dart';
 import 'package:pimpineo_v1/viewmodels/registrarse_us_view_model.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
+
 
 
 class RegistrarseUS extends StatefulWidget {
@@ -36,7 +39,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
   bool agreeTermsAndConditions = false;
 
   //Main container box height
-  double boxHeight = 560.0;
+  double boxHeight = SizeConfig.resizeHeight(560);
   
   @override
   Widget build(BuildContext context) {
@@ -51,20 +54,20 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                 Navigator.pushNamedAndRemoveUntil(context, LogIn.route ,  (Route<dynamic> route) => false);
               },
               color: Colors.blue[800],
-              iconSize: 28,
+              iconSize: SizeConfig.resizeHeight(28),
             ),
             elevation: 0,
             backgroundColor: Colors.white,
             centerTitle: false,
             title: Padding(
-              padding: const EdgeInsets.only(right:60.0),
+              padding: EdgeInsets.only(right: SizeConfig.resizeHeight(60)),
               child: Row(
                mainAxisAlignment: MainAxisAlignment.center,
                children: <Widget>[
                  Container(
                      padding: EdgeInsets.only(top: 5.0),
-                     height: 50.0,
-                     width: 50.0,
+                     height: SizeConfig.resizeHeight(50),
+                     width: SizeConfig.resizeHeight(50),
                      child: Image.asset('images/us.png')),
                  SizedBox(width: 5.0),
                  Text( //Pimpineo logo
@@ -72,7 +75,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                    style: TextStyle(
                        color: Colors.blue[800],
                        fontFamily: 'Pacifico',
-                       fontSize: 30.0),
+                       fontSize: SizeConfig.resizeHeight(30)),
                  ),
                  ],
            ),
@@ -98,14 +101,14 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
               ),
               SingleChildScrollView(  //elevated box with all the information for the user to register
                 child: Padding(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
+                padding: EdgeInsets.only(left: SizeConfig.resizeWidth(20), right: SizeConfig.resizeWidth(20), top: SizeConfig.resizeHeight(5)),
                 child: Column( //column with all the information
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(height: 10.0),
+                    SizedBox(height: SizeConfig.resizeHeight(10)),
                     Container(
                       width: double.infinity,
-                      height: boxHeight,
+                      //height: boxHeight,
                       decoration: BoxDecoration( //box shadow with the registration form
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10.0),
@@ -121,7 +124,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                           ]),
                       child: Padding(
                         padding:
-                            EdgeInsets.only(right: 14.0, left: 14.0, top: 8.0),
+                            EdgeInsets.only(right: SizeConfig.resizeWidth(14), left: SizeConfig.resizeWidth(14), top: SizeConfig.resizeHeight(8)),
                         child: model.state == ViewState.Busy
                         ? Center(
                           child: Container(
@@ -157,8 +160,8 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                             ),
                               ),)
                           ],
-                        ),
-                          )) 
+                         ),
+                        )) 
                         : Form(
                           key: _formKey,
                           child: Column(
@@ -174,7 +177,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 decoration: InputDecoration(
                                   hintText: 'Nombre',
                                   hintStyle:
-                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: 12.0),
+                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
                                 ),
                               ),
                               TextFormField(//contrasena
@@ -188,7 +191,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 decoration: InputDecoration(
                                   hintText: 'Contrasena',
                                   hintStyle:
-                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: 12.0),
+                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
                                 ),
                               ),
                               TextFormField(//confirmar contrasena
@@ -201,7 +204,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 decoration: InputDecoration(
                                   hintText: 'Confirmar Contrasena',
                                   hintStyle:
-                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: 12.0),
+                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
                                 ),
                               ),
                               TextFormField(//telefono 
@@ -215,7 +218,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 decoration: InputDecoration(
                                   hintText: 'Numero de Telefono(ejemplo):11234567890',
                                   hintStyle:
-                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: 12.0),
+                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
                                 ),
                                 inputFormatters: [ //mask that creates the dashes
                                   TextFormatter(
@@ -234,10 +237,10 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 decoration: InputDecoration(
                                   hintText: 'Correo Electronico(ejemplo):correo@email.com',
                                   hintStyle:
-                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: 12.0),
+                                      TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
                                 ),
                               ),
-                              SizedBox(height: 25.0,),
+                              SizedBox(height: SizeConfig.resizeHeight(20),),
                               FlatButton( //button registrar
                                 splashColor: Colors.white,
                                 highlightColor: Colors.white,
@@ -260,15 +263,15 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 },
                                 child: Center(
                                   child: Container(
-                                    width: 200,
-                                    height: 40,
+                                    width: SizeConfig.resizeWidth(200),
+                                    height: SizeConfig.resizeHeight(40),
                                     child: Center(
                                         child: Text(
                                       'Registrarse',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'Poppins',
-                                          fontSize: 20.0),
+                                          fontSize: SizeConfig.resizeHeight(20)),
                                     )),
                                     decoration: BoxDecoration(
                                         gradient: LinearGradient(colors: [
@@ -279,7 +282,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10.0,),
+                              SizedBox(height: SizeConfig.resizeHeight(5),),
                               FlatButton( //button registrar con google
                                 splashColor: Colors.white,
                                 highlightColor: Colors.white,
@@ -300,8 +303,8 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                 },
                                 child: Center(
                                   child: Container(
-                                    width: 200,
-                                    height: 40,
+                                    width: SizeConfig.resizeWidth(200),
+                                    height: SizeConfig.resizeHeight(40),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
@@ -312,7 +315,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                           style: TextStyle(
                                                   color: Colors.grey[800],
                                                   fontFamily: 'Solway',
-                                                  fontSize: 16),
+                                                  fontSize: SizeConfig.resizeHeight(16)),
                                         ),
                                       ],
                                     ),
@@ -324,6 +327,7 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: SizeConfig.resizeHeight(10),), 
                             ],
                           ),
                         ),
@@ -345,27 +349,29 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
           contentPadding: EdgeInsets.only(bottom: 10,left: 20,right: 20, top: 20,),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          content: Container(
-            height: MediaQuery.of(context).size.height * 0.25,
-            width: 300,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(text,style: TextStyle(fontFamily: 'Poppins'),),
-                SizedBox(height: 30),
-                Center(
-                  child: FlatButton(   //thumb up
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.green,
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route,  (Route<dynamic> route) => false);
-                      },
-                      child: Icon(Icons.thumb_up, color: Colors.white)
+          content: FittedBox(
+            child: Container(
+              height: SizeConfig.resizeHeight(MediaQuery.of(context).size.height * 0.30),
+              width: SizeConfig.resizeWidth(300),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(text,style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(16)),),
+                  SizedBox(height: SizeConfig.resizeHeight(20)),
+                  Center(
+                    child: FlatButton(   //thumb up
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.green,
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route,  (Route<dynamic> route) => false);
+                        },
+                        child: Icon(Icons.thumb_up, color: Colors.white,size: SizeConfig.resizeHeight(25),)
+                    ),
                   ),
-                ),
-             ],
+               ],
+              ),
             ),
           ),
         );
@@ -377,27 +383,29 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
           contentPadding: EdgeInsets.only(bottom: 10,left: 20,right: 20, top: 20,),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          content: Container(
-            height: MediaQuery.of(context).size.height * 0.25,
-            width: 300,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(text,style: TextStyle(fontFamily: 'Poppins'),),
-                SizedBox(height: 30),
-                Center(
-                  child: FlatButton(   //thumb up
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.green,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.thumb_up, color: Colors.white)
+          content: FittedBox(
+            child: Container(
+              height: SizeConfig.resizeHeight(MediaQuery.of(context).size.height * 0.30),
+              width: SizeConfig.resizeWidth(300),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(text,style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(16)),),
+                  SizedBox(height: SizeConfig.resizeHeight(20)),
+                  Center(
+                    child: FlatButton(   //thumb up
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.green,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.thumb_up, color: Colors.white,size: SizeConfig.resizeHeight(25),)
+                    ),
                   ),
-                ),
-             ],
+               ],
+              ),
             ),
           ),
         );

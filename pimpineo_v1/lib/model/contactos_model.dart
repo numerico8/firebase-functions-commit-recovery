@@ -16,6 +16,7 @@ class ListaContactosModel extends ChangeNotifier {
  List<String> nombres = List<String>();
  List<String> telefonos = List<String>();
  List<String> nombredisplay = List<String>();
+ List<String> telefonosBAK = List<String>();
 
 //constructor
  ListaContactosModel();
@@ -38,6 +39,7 @@ class ListaContactosModel extends ChangeNotifier {
    this.telefonos = getContactosTelefono();
    this.nombres = getContactosNombre();
    this.nombredisplay = this.nombres;
+   this.telefonosBAK = this.telefonos;
  }
 
 

@@ -3,10 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 class SizeConfig{
 
-  static double heightMultiplier;
-  static double textMultiplier;
-  static double imageSizeMultiplier;
-
   static double blockSizeHorizontal = 0;
   static double blockSizeVertical = 0;
 
@@ -19,13 +15,17 @@ class SizeConfig{
 
     blockSizeHorizontal = screenWidth / 100;
     blockSizeVertical = screenHeight / 100;
-
-    heightMultiplier = blockSizeVertical;
-    textMultiplier = blockSizeVertical;
-    imageSizeMultiplier = blockSizeHorizontal;
  
-    print(blockSizeHorizontal);
-    print(blockSizeVertical);
   }
+
+
+  static double resizeHeight(double actualHeight){
+    return actualHeight/6.83 * blockSizeVertical;
+  }
+
+  static double resizeWidth(double actualWidth){
+    return actualWidth/4.11 * blockSizeHorizontal;
+  }
+
 
 }

@@ -24,7 +24,7 @@ class Helpers{
 
   static bool fromComprarPage = false;
 
-  static double minAmount = 12.00;
+  static double minAmount = 10.00;
 
   static double maxAmountPerCardPerDay = 120.00;
 

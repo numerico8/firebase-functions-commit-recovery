@@ -61,7 +61,6 @@ class ContactsViewModel extends BaseModel {
     _firestoreService
         .updateContactInUserList(Provider.of<User>(context, listen: false));
 
-    //TODO we need to create a logic in order to catch errors if there was any issue removing contacts in database or application
   }
 
 

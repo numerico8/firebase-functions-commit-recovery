@@ -6,6 +6,8 @@ import 'package:pimpineo_v1/viewmodels/transacciones_viewmodel.dart';
 import 'package:pimpineo_v1/widgets/credit_card.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 
 
@@ -54,18 +56,18 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
               elevation: 0,
               centerTitle: true,
               backgroundColor: Colors.white,
-              title: Text(//Mi Perfil
+              title: Text(//Listado de transacciones
                   'Listado de Transacciones',
                   style: TextStyle(
                       color: Colors.blue[800],
                       fontFamily: 'Poppins',
-                      fontSize: 22.0)),
+                      fontSize: SizeConfig.resizeHeight(22))),
               leading: IconButton(  // boton de atras
                 icon: Padding(
                   padding: EdgeInsets.only(left: 5.0),
                   child: Icon(
                     Icons.arrow_back_ios,
-                    size: 30.0,
+                    size: SizeConfig.resizeHeight(30),
                     color: Colors.blue[800],
                   ),
                 ),
@@ -73,7 +75,7 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                   setState(() {
                     Helpers.lastroute = 'transacciones';
                   });
-                  Navigator.pushNamed(context, LobbyUS.route);
+                  Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route, (Route<dynamic> route) => false);
                 },
               ),
             ),
@@ -92,7 +94,7 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                             style: TextStyle(
                               fontFamily: 'Sen', 
                               color: Colors.grey,
-                              fontSize: 12
+                              fontSize: SizeConfig.resizeHeight(12)
                         ),),
                       ),
                       Slidable( //muestra el boton de slide cuando se hace la accion hacia la izquierda
@@ -135,7 +137,7 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Icon(Icons.repeat, color:Colors.white),
-                                    Text('Repetir', style: TextStyle(fontFamily: 'Poppins', color: Colors.white),)
+                                    FittedBox(child: Text('Repetir', style: TextStyle(fontFamily: 'Poppins', color: Colors.white),))
                                   ],
                                 )),
                             ),
@@ -158,7 +160,7 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                                    style: TextStyle(
                                      color: Colors.grey[900],
                                      fontFamily: 'Poppins',
-                                     fontSize: 15,
+                                     fontSize: SizeConfig.resizeHeight(15),
                                    ),
                                    children: <TextSpan>[
                                      TextSpan(text: model.transacciones[index]['type'],style: TextStyle(fontStyle: FontStyle.italic))
@@ -170,7 +172,7 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                                    style: TextStyle(
                                      color: Colors.grey[900],
                                      fontFamily: 'Poppins',
-                                     fontSize: 15,
+                                     fontSize: SizeConfig.resizeHeight(15),
                                    ),
                                    children: <TextSpan>[
                                      TextSpan(text: '\$' +  model.transacciones[index]['cantidad'].toString() ,style: TextStyle(fontStyle: FontStyle.italic))
@@ -182,7 +184,7 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                                    style: TextStyle(
                                      color: Colors.grey[900],
                                      fontFamily: 'Poppins',
-                                     fontSize: 15,
+                                     fontSize: SizeConfig.resizeHeight(15),
                                    ),
                                    children: <TextSpan>[
                                      TextSpan(text:model.transacciones[index]['payment_id'].toString().substring(4).toLowerCase() ,style: TextStyle(fontStyle: FontStyle.italic))
@@ -196,7 +198,7 @@ class _TransaccionesUIState extends State<TransaccionesUI> {
                                    style: TextStyle(
                                      color: Colors.grey[900],
                                      fontFamily: 'Poppins',
-                                     fontSize: 15,
+                                     fontSize: SizeConfig.resizeHeight(15),
                                    ),
                                    children: <TextSpan>[
                                      TextSpan(text: model.transacciones[index]['telefonosRecargadosString'].toString() ,style: TextStyle(fontStyle: FontStyle.italic))

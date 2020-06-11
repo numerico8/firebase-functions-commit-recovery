@@ -10,6 +10,8 @@ import 'package:pimpineo_v1/view/us/herramientas.dart';
 import 'package:pimpineo_v1/view/us/profile_page.dart';
 import 'package:pimpineo_v1/viewmodels/us_lobby_model.dart';
 import 'package:provider/provider.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 
 class MyDrawer extends StatefulWidget {
@@ -23,8 +25,8 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   
   AnimationService animation = locator<AnimationService>();
-  double drawerWidth = 260.0;
-  double drawerHeight = 60.0;
+  double drawerWidth = SizeConfig.resizeWidth(260);
+  double drawerHeight = SizeConfig.resizeHeight(60);
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +37,14 @@ class _MyDrawerState extends State<MyDrawer> {
         child: ListView(
           children: <Widget>[
             Padding( //lista del drawer
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: EdgeInsets.only(top: SizeConfig.resizeHeight(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container( //Profile avatar que va a ser un circulo con la inicial del ususario en este y abajo el numero de telefono del usuario
                     width: drawerWidth, 
-                    height: 170, 
+                    height: SizeConfig.resizeHeight(170), 
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -61,13 +63,13 @@ class _MyDrawerState extends State<MyDrawer> {
                           radius: 40.0,
                           child: Image.asset('images/us.png'),
                         ),
-                        SizedBox(height: 10.0),
+                        SizedBox(height: SizeConfig.resizeHeight(10)),
                         Text(  //name in the list 
                             Provider.of<User>(context).nombre.split(' ')[0].toUpperCase(),
                             style:TextStyle(
                               color: Colors.grey[600],
                               fontFamily: 'Poppins',
-                              fontSize: 24,
+                              fontSize: SizeConfig.resizeHeight(24),
                               fontWeight: FontWeight.w500
                             )
                           ),                      
@@ -101,12 +103,12 @@ class _MyDrawerState extends State<MyDrawer> {
                                 style:TextStyle(
                                   color: Colors.grey[600],
                                   fontFamily: 'Poppins',
-                                  fontSize: 16,
+                                  fontSize: SizeConfig.resizeHeight(16),
                                   fontWeight: FontWeight.w500
                                 )
                             ), 
-                            SizedBox(width:10.0),
-                            Icon(Icons.arrow_forward_ios,color: Colors.grey[600], size: 20.0,)
+                            SizedBox(width:SizeConfig.resizeHeight(10)),
+                            Icon(Icons.arrow_forward_ios,color: Colors.grey[600], size: SizeConfig.resizeHeight(20),)
                           ],
                         ),
                       ),
@@ -141,12 +143,12 @@ class _MyDrawerState extends State<MyDrawer> {
                                 style:TextStyle(
                                   color: Colors.grey[600],
                                   fontFamily: 'Poppins',
-                                  fontSize:16,
+                                  fontSize:SizeConfig.resizeHeight(16),
                                   fontWeight: FontWeight.w500
                                 )
                             ), 
-                            SizedBox(width:10.0),
-                            Icon(Icons.build ,color: Colors.grey[600], size: 20.0,)
+                            SizedBox(width:SizeConfig.resizeWidth(10)),
+                            Icon(Icons.build ,color: Colors.grey[600], size: SizeConfig.resizeHeight(20),)
                           ],
                         ),
                       ),
@@ -181,12 +183,12 @@ class _MyDrawerState extends State<MyDrawer> {
                                 style:TextStyle(
                                   color: Colors.grey[600],
                                   fontFamily: 'Poppins',
-                                  fontSize:16,
+                                  fontSize:SizeConfig.resizeHeight(16),
                                   fontWeight: FontWeight.w500
                                 )
                             ), 
-                            SizedBox(width:10.0),
-                            Icon(Icons.perm_phone_msg ,color: Colors.grey[600], size: 20.0,)
+                            SizedBox(width:SizeConfig.resizeWidth(10)),
+                            Icon(Icons.perm_phone_msg ,color: Colors.grey[600], size: SizeConfig.resizeHeight(20),)
                           ],
                         ),
                       ),
@@ -221,12 +223,12 @@ class _MyDrawerState extends State<MyDrawer> {
                                 style:TextStyle(
                                   color: Colors.grey[600],
                                   fontFamily: 'Poppins',
-                                  fontSize: 16,
+                                  fontSize: SizeConfig.resizeHeight(16),
                                   fontWeight: FontWeight.w500
                                 )
                             ), 
                             SizedBox(width:0.0),
-                            Icon(FontAwesomeIcons.graduationCap ,color: Colors.grey[600], size: 20.0,)
+                            Icon(FontAwesomeIcons.graduationCap ,color: Colors.grey[600], size: SizeConfig.resizeHeight(20),)
                           ],
                         ),
                       ),
@@ -253,12 +255,12 @@ class _MyDrawerState extends State<MyDrawer> {
                                 style:TextStyle(
                                   color: Colors.grey[600],
                                   fontFamily: 'Poppins',
-                                  fontSize:16,
+                                  fontSize:SizeConfig.resizeHeight(16),
                                   fontWeight: FontWeight.w500
                                 )
                             ), 
-                            SizedBox(width:10.0),
-                            Icon(Icons.power_settings_new ,color: Colors.grey[600], size: 20.0,)
+                            SizedBox(width:SizeConfig.resizeWidth(10)),
+                            Icon(Icons.power_settings_new ,color: Colors.grey[600], size: SizeConfig.resizeHeight(20),)
                           ],
                         ),
                       ),

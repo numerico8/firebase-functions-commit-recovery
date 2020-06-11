@@ -5,6 +5,8 @@ import 'package:pimpineo_v1/services/locator.dart';
 import 'package:pimpineo_v1/services/validator.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
 import 'package:provider/provider.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 //en este widget se llama el backend para cambia la informacion del ususario
 
@@ -40,13 +42,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(
                   color: Colors.blue[800],
                   fontFamily: 'Poppins',
-                  fontSize: 22.0
+                  fontSize: SizeConfig.resizeHeight(22)
                 )
              ),
             leading: IconButton( // boton de atras
                 icon: Padding(
                   padding: EdgeInsets.only(left:5.0),
-                  child: Icon(Icons.arrow_back_ios, size: 30.0, color: Colors.blue[800],),
+                  child: Icon(Icons.arrow_back_ios, size: SizeConfig.resizeHeight(30), color: Colors.blue[800],),
                 ),
                 onPressed: (){
                   Navigator.pop(context);
@@ -75,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container( //Nombre text
                     alignment: Alignment.centerLeft,
                     color: Colors.grey[200],
-                    height: 50.0, 
+                    height: SizeConfig.resizeHeight(50), 
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Text(
@@ -83,14 +85,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(
                           fontFamily: 'Monserrat',
                           fontWeight: FontWeight.w600,
-                          fontSize: 18.0
+                          fontSize: SizeConfig.resizeHeight(18)
                         )
                       ),
                     ),
                   ),
                   Container( //Nombre
                     color: Colors.white,
-                    height: 50.0, 
+                    height: SizeConfig.resizeHeight(50), 
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
@@ -106,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(
                                 fontFamily: 'Monserrat',
                                 fontWeight: FontWeight.w600,
-                                fontSize: 18.0
+                                fontSize: SizeConfig.resizeHeight(18)
                               ),
                               initialValue: user.nombre,
                               decoration: InputDecoration(
@@ -128,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container( //Telefono text
                     alignment: Alignment.centerLeft,
                     color: Colors.grey[200],
-                    height: 50.0, 
+                    height: SizeConfig.resizeHeight(50), 
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Text(
@@ -136,14 +138,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(
                           fontFamily: 'Monserrat',
                           fontWeight: FontWeight.w600,
-                          fontSize: 18.0
+                          fontSize: SizeConfig.resizeHeight(18)
                         )
                       ),
                     ),
                   ),
                   Container( //Telefono
                     color: Colors.white,
-                    height: 50.0,
+                    height: SizeConfig.resizeHeight(50),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
@@ -158,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(
                                 fontFamily: 'Monserrat',
                                 fontWeight: FontWeight.w600,
-                                fontSize: 18.0
+                                fontSize: SizeConfig.resizeHeight(18)
                               ),
                               initialValue: user.telefono,
                               decoration: InputDecoration(
@@ -180,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container( // correo text
                     alignment: Alignment.centerLeft,
                     color: Colors.grey[200],
-                    height: 50.0, 
+                    height: SizeConfig.resizeHeight(50), 
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Text(
@@ -188,14 +190,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(
                           fontFamily: 'Monserrat',
                           fontWeight: FontWeight.w600,
-                          fontSize: 18.0
+                          fontSize: SizeConfig.resizeHeight(18)
                         )
                       ),
                     ),
                   ),
                   Container( // correo
                     color: Colors.white,
-                    height: 50.0,
+                    height: SizeConfig.resizeHeight(50),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
@@ -206,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(
                                 fontFamily: 'Monserrat',
                                 fontWeight: FontWeight.w600,
-                                fontSize: 18.0
+                                fontSize: SizeConfig.resizeHeight(18)
                               ),
                               initialValue: user.correo,
                               decoration: InputDecoration(
@@ -234,8 +236,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: <Widget>[
 
                       Container( // boton cancelar
-                        height: 40.0,
-                        width: 170.0,
+                        height: SizeConfig.resizeHeight(40),
+                        width: SizeConfig.resizeWidth(170),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -252,8 +254,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     
                       Container( //boton salvar 
-                        height: 40.0,
-                        width: 170.0,
+                        height: SizeConfig.resizeHeight(40),
+                        width: SizeConfig.resizeWidth(170),
                         child: FlatButton( //boton salvar
                           color: Colors.green[100],
                           shape: RoundedRectangleBorder(

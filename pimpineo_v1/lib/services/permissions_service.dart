@@ -23,8 +23,6 @@ class PermissionService {
       }
     }
 
-    //TODO when finish testing remove this
-    print(currentStatus);
 
     if(currentStatus){
       Iterable<Contact> contacts = await ContactsService.getContacts();

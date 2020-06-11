@@ -3,6 +3,7 @@ import 'package:pimpineo_v1/services/helpers.dart';
 import 'package:pimpineo_v1/view/us/registrarse_us.dart';
 import 'package:pimpineo_v1/viewmodels/terminos_y_condiciones_viewmodel.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
 
 
 class TermsAndCond extends StatefulWidget {
@@ -42,13 +43,13 @@ class _TermsAndCondState extends State<TermsAndCond> {
                  style: TextStyle(
                      color: Colors.blue[800],
                      fontFamily: 'Poppins',
-                     fontSize: 22.0)),
+                     fontSize: SizeConfig.resizeHeight(22))),
              leading: IconButton(  // boton de atras
                icon: Padding(
                  padding: EdgeInsets.only(left: 5.0),
                  child: Icon(
                    Icons.arrow_back_ios,
-                   size: 30.0,
+                   size: SizeConfig.resizeHeight(30),
                    color: Colors.blue[800],
                  ),
                ),
@@ -63,8 +64,8 @@ class _TermsAndCondState extends State<TermsAndCond> {
                  padding: const EdgeInsets.only(top: 12.0,right: 12,left: 12,),
                  child: Container( // terminos y condiciones
                    padding: EdgeInsets.all(5),
-                   height:450,
-                   width: 300,
+                   height:SizeConfig.resizeHeight(450),
+                   width: SizeConfig.resizeWidth(300),
                    decoration: BoxDecoration(
                      borderRadius: BorderRadius.circular(10),
                      border: Border.all(color: Colors.grey[600])
@@ -98,7 +99,7 @@ class _TermsAndCondState extends State<TermsAndCond> {
                           }
                         }
                       },
-                      child: Text('Registrarse', style: TextStyle(fontFamily: 'Poppins',color: Colors.white, fontSize: 20),)
+                      child: Text('Registrarse', style: TextStyle(fontFamily: 'Poppins',color: Colors.white, fontSize: SizeConfig.resizeHeight(20)),)
                   ),
                 ),
              ],

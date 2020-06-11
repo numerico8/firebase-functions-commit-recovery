@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 
 class ContactUS extends StatefulWidget {
@@ -23,13 +25,13 @@ class _ContactUSState extends State<ContactUS> {
                  style: TextStyle(
                      color: Colors.blue[800],
                      fontFamily: 'Poppins',
-                     fontSize: 22.0)),
+                     fontSize: SizeConfig.resizeHeight(22))),
              leading: IconButton(  // boton de atras
                icon: Padding(
                  padding: EdgeInsets.only(left: 5.0),
                  child: Icon(
                    Icons.arrow_back_ios,
-                   size: 30.0,
+                   size: SizeConfig.resizeHeight(30),
                    color: Colors.blue[800],
                  ),
                ),
@@ -41,14 +43,14 @@ class _ContactUSState extends State<ContactUS> {
            body: Column(
              crossAxisAlignment: CrossAxisAlignment.stretch,
              children: <Widget>[
-               SizedBox(height: 10,),
+               SizedBox(height: SizeConfig.resizeHeight(10),),
                Padding( //palabreria de contactarnos
                  padding: const EdgeInsets.all(12.0),
                  child: Text('Para contactarnos complete la forma a cotinuacion. Le daremos respuesta en un plazo de 24 horas.\nDe antemano agradecemos su paciencia y aseguramos que cualquiera sea su situacion haremos todo lo que este a nuestro alcance para ayudarl@.\n\nMuchas Gracias!!\nEquipo de Pimpineo',
-                 style: TextStyle(fontFamily: 'Solway', fontSize: 18),
+                 style: TextStyle(fontFamily: 'Solway', fontSize: SizeConfig.resizeHeight(18)),
                  ),
                ),
-               SizedBox(height: 50,),
+               SizedBox(height: SizeConfig.resizeHeight(50),),
                Padding(
                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                  child: FlatButton(
@@ -64,8 +66,8 @@ class _ContactUSState extends State<ContactUS> {
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: <Widget>[
                        Icon(Icons.contact_phone,color: Colors.white,),
-                       SizedBox(width:10),
-                       Text('Contactar',style: TextStyle(fontFamily: 'Poppins',color: Colors.white, fontSize: 20))
+                       SizedBox(width:SizeConfig.resizeHeight(10)),
+                       Text('Contactar',style: TextStyle(fontFamily: 'Poppins',color: Colors.white, fontSize: SizeConfig.resizeHeight(20)))
                      ],)
               ),
                )

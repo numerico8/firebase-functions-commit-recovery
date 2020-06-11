@@ -4,6 +4,7 @@ import 'package:pimpineo_v1/model/user.dart';
 import 'package:pimpineo_v1/viewmodels/terminos_y_condiciones_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
 
 
 
@@ -42,13 +43,13 @@ class _DrawerTermsAndCondState extends State<DrawerTermsAndCond> {
                  style: TextStyle(
                      color: Colors.blue[800],
                      fontFamily: 'Poppins',
-                     fontSize: 22.0)),
+                     fontSize: SizeConfig.resizeHeight(22))),
              leading: IconButton(  // boton de atras
                icon: Padding(
                  padding: EdgeInsets.only(left: 5.0),
                  child: Icon(
                    Icons.arrow_back_ios,
-                   size: 30.0,
+                   size: SizeConfig.resizeHeight(30),
                    color: Colors.blue[800],
                  ),
                ),
@@ -63,8 +64,8 @@ class _DrawerTermsAndCondState extends State<DrawerTermsAndCond> {
                  padding: const EdgeInsets.only(top: 12.0,right: 12,left: 12,),
                  child: Container( // terminos y condiciones
                    padding: EdgeInsets.all(5),
-                   height:500,
-                   width: 300,
+                   height:SizeConfig.resizeHeight(500),
+                   width: SizeConfig.resizeWidth(300),
                    decoration: BoxDecoration(
                      borderRadius: BorderRadius.circular(10),
                      border: Border.all(color: Colors.grey[600])

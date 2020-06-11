@@ -8,6 +8,8 @@ import 'package:pimpineo_v1/widgets/main_carousel_contactos.dart';
 import 'package:pimpineo_v1/widgets/main_carousel_home.dart';
 import 'package:pimpineo_v1/widgets/main_carousel_recargar.dart';
 import 'package:pimpineo_v1/widgets/my_drawer.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 
 class LobbyUS extends StatefulWidget {
@@ -73,11 +75,11 @@ class _LobbyUSState extends State<LobbyUS> {
       child: Container(
         child: Icon(
           _icons[index],
-          size: 30.0,
+          size: SizeConfig.resizeHeight(30),
           color: _selectedIndex == index ? _colors[index] : Colors.grey,
         ),
-        height: 50.0,
-        width: 50.0,
+        height: SizeConfig.resizeHeight(50),
+        width: SizeConfig.resizeWidth(50),
         decoration: BoxDecoration(
           border: _selectedIndex == index 
             ? Border(bottom: BorderSide(color: _colors[index] ,style: BorderStyle.solid,width:3.0))
@@ -145,7 +147,7 @@ class _LobbyUSState extends State<LobbyUS> {
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: 'Pacifico',
-                  fontSize: 28.0
+                  fontSize: SizeConfig.resizeHeight(28)
                 )
              ),
               centerTitle: true,
@@ -153,8 +155,8 @@ class _LobbyUSState extends State<LobbyUS> {
                 icon: Padding(
                   padding: EdgeInsets.only(left:5.0),
                   child: _iscollapsed == true 
-                    ? Icon(Icons.dehaze,size: 35.0,)
-                    : Icon(Icons.arrow_back_ios, size: 30.0,),
+                    ? Icon(Icons.dehaze,size: SizeConfig.resizeHeight(35),)
+                    : Icon(Icons.arrow_back_ios, size: SizeConfig.resizeHeight(30),),
                 ),
                 onPressed: (){
                   setState((){
@@ -166,7 +168,7 @@ class _LobbyUSState extends State<LobbyUS> {
                 Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: IconButton(
-                    icon: Icon(Icons.clear,color: Colors.white,size: 30.0,), 
+                    icon: Icon(Icons.clear,color: Colors.white,size: SizeConfig.resizeHeight(30),), 
                     onPressed: (){
                       //model.logout();
                       Navigator.pushNamedAndRemoveUntil(context, LogIn.route ,  (Route<dynamic> route) => false);
@@ -181,7 +183,13 @@ class _LobbyUSState extends State<LobbyUS> {
                 scaffold = Scaffold.of(context);
                 return Stack(
                 children: <Widget>[
-                  MyDrawer(model: model,),
+                  GestureDetector(
+                    onTap: (){
+                      setState((){
+                        _iscollapsed = !_iscollapsed;
+                      });
+                    }, 
+                    child: MyDrawer(model: model,)),
                   myDashboard(context),
                 ],);
               },),
@@ -207,7 +215,7 @@ class _LobbyUSState extends State<LobbyUS> {
         child: ListView( //where all lists are built
           padding: EdgeInsets.symmetric(vertical: 10.0),
             children: <Widget>[
-              SizedBox(height: 10.0), //with this space we can put something on the top
+              SizedBox(height: SizeConfig.resizeHeight(10)), //with this space we can put something on the top
               Padding(            //this are the carousel selectors
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Row(      //this are the carousel selectors
@@ -219,17 +227,17 @@ class _LobbyUSState extends State<LobbyUS> {
                           .toList(),
                     ),
                   ),
-              SizedBox(height:10.0),
+              SizedBox(height:SizeConfig.resizeHeight(10)),
               Center(            //linea debajo del menu horizontal 
                     child: Container(
-                      width: 390.0,
+                      width: SizeConfig.resizeWidth(390),
                       height: 2.0,
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor
                       ),
                     ),
                   ), 
-              SizedBox(height:10.0),
+              SizedBox(height:SizeConfig.resizeHeight(10)),
               _maincarousel[
                   _mainCarouselIndex], //THIS IS THE PART TO SELECT THE MAINCAROUSEL VIEW
             ],

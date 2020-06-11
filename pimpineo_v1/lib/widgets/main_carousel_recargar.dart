@@ -12,6 +12,7 @@ import 'package:pimpineo_v1/viewmodels/contacts_viewmodel.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
 import 'package:pimpineo_v1/services/helpers.dart';
 import 'package:provider/provider.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
 
 
 class MainCarouselRecargar extends StatefulWidget {
@@ -55,18 +56,18 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Icon(FontAwesomeIcons.plug, color: Theme.of(context).primaryColor, size: 30.0,),
-            SizedBox(width:15.0,),
+            Icon(FontAwesomeIcons.plug, color: Theme.of(context).primaryColor, size: SizeConfig.resizeHeight(30),),
+            SizedBox(width:SizeConfig.resizeHeight(15),),
             Text( //Recargar
               'Recargar',
               style: TextStyle(
                   color: Colors.blue[800],
-                  fontSize: 28.0,
+                  fontSize: SizeConfig.resizeHeight(28),
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w700),
             ),
             ]),
-          SizedBox(height: 20.0,),
+          SizedBox(height: SizeConfig.resizeHeight(20),),
           Container(  //Listview container
             decoration: BoxDecoration(
               color: Colors.grey[100],
@@ -82,8 +83,8 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
                   blurRadius: 5.0)
             ]
             ),
-            height: 400.0,
-            width: 360.0,
+            height: SizeConfig.resizeHeight(400),
+            width: SizeConfig.resizeWidth(360),
             child: StatefulBuilder(
               builder: (context, setState) => Consumer<ListaContactosModel>(
                 builder: (context, lists, child) {
@@ -93,7 +94,7 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
                       child: Container(
                         color: Colors.grey[400],
                         height: 1.0,
-                        width: 330.0,
+                        width: SizeConfig.resizeWidth(330),
                       ),
                     );             
                   },
@@ -107,12 +108,12 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
             )
             ),
           Padding(   //Raised button to Enviar Recarga
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(25)),
             child: RaisedButton( 
               child: Center(
                 child: Text( //Enviar Recarga texto
                   'Enviar Recarga', 
-                  style: TextStyle(color: Colors.white, fontSize:20, fontFamily: 'Sen',fontWeight:FontWeight.w600),
+                  style: TextStyle(color: Colors.white, fontSize:SizeConfig.resizeHeight(20), fontFamily: 'Sen',fontWeight:FontWeight.w600),
                 ),
               ),
               splashColor: Colors.green[300],
@@ -120,7 +121,7 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
                 borderRadius: BorderRadius.circular(8.0)
               ),
               color: Colors.green,
-              onPressed: (){   //algorithm
+              onPressed: (){   //algorithm to open the dialog to send select the pauyment method
                 
                 //clear el arreglo de los que tienen cargos
                 listaRecargar.clear();
@@ -145,6 +146,8 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
                     bool _selectedTarjeta = false;
                   // cambia el estado del dialogo
                     bool busy = false;
+                  //numeros a recargar son los correctos
+                    bool numerosCorrectos = false;
 
                   // dialogo de alerta que hace la inteligencia antes de llegar a la vista de la tarjeta de credito
                     return StatefulBuilder(
@@ -156,308 +159,337 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
                             borderRadius: BorderRadius.circular(10.0)
                           ),
                           content: busy == false 
-                          ?Container(
-                            height: 350,
-                            width: 330,
-                            child: Column(
-                              children: <Widget>[
-                              Container( // contenido general del dialogo
-                                padding: EdgeInsets.all(10.0),
-                                height: 280.0,
-                                width: 330.0,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: Offset(1, 2),
-                                      color: Colors.grey[500],
-                                      blurRadius: 4.0
-                                    ),
-                                    BoxShadow(
-                                      offset: Offset(2, 4),
-                                      color: Colors.grey[500],
-                                      blurRadius: 4.0
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Colors.grey[400]
-                                  )
-                                ),
-                                child: Column( // texto y metodos de pago 
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Container( // total a pagar
-                                      padding: EdgeInsets.all(5.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue[800],
-                                        borderRadius: BorderRadius.circular(5),
-                                        ),
-                                      child: Center( //TOTAL A PAGAR
-                                        child: RichText(
-                                          text: TextSpan(
-                                            text: 'TOTAL:',
-                                            style: TextStyle(
-                                              color:  Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 20,
-                                              fontFamily: 'Poppins'),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: '  \$' + totalAPagar.toStringAsFixed(2),
-                                                style: TextStyle(
-                                                  fontSize: 32
-                                                )
-                                              )
-                                            ]
-                                          )
-                                        ),
+                          ?FittedBox(
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                Container( // total, credito disponible, metodos de pago
+                                  padding: EdgeInsets.all(10.0),
+                                  width: SizeConfig.resizeWidth(330),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(1, 2),
+                                        color: Colors.grey[500],
+                                        blurRadius: 4.0
                                       ),
-                                    ),
-                                    SizedBox(height: 5,),
-                                    Center( //credito disponible numero
-                                      child: Text( 
-                                        '\$' + double.parse(model.user.credito.toString()).toStringAsFixed(2),
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 28.0,
-                                          fontFamily: 'Sen'
-                                        ),                            
+                                      BoxShadow(
+                                        offset: Offset(2, 4),
+                                        color: Colors.grey[500],
+                                        blurRadius: 4.0
                                       ),
-                                    ),
-                                    SizedBox(height:5.0),
-                                    Center( //credito disponible texto
-                                      child: Text(//credito disponible had another read to the database
-                                              'Credito Disponible',
+                                    ],
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: Colors.grey[400]
+                                    )
+                                  ),
+                                  child: Column( // texto y metodos de pago 
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: <Widget>[
+                                      Container( // total a pagar
+                                        padding: EdgeInsets.all(5.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue[800],
+                                          borderRadius: BorderRadius.circular(5),
+                                          ),
+                                        child: Center( //TOTAL A PAGAR
+                                          child: RichText(
+                                            text: TextSpan(
+                                              text: 'TOTAL:',
                                               style: TextStyle(
-                                                fontSize: 12,
-                                                fontFamily: 'Sen',
-                                                color: Colors.grey
-                                              ),
+                                                color:  Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: SizeConfig.resizeHeight(20),
+                                                fontFamily: 'Poppins'),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                  text: '  \$' + totalAPagar.toStringAsFixed(2),
+                                                  style: TextStyle(
+                                                    fontSize: SizeConfig.resizeHeight(32)
+                                                  )
+                                                )
+                                              ]
+                                            )
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height:10.0),
-                                    Container( // metodo de pago
-                                      child: (model.user.credito == 0 || model.user.credito > totalAPagar)
-                                      ?Column( //if client doesnt have credit enought
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container( //credito tile
-                                            decoration: BoxDecoration(
-                                              color: _selectedCredito == false
-                                              ?Colors.white
-                                              :Colors.green,
-                                              borderRadius: BorderRadius.circular(25)
-                                            ),
-                                            child: ListTile( //Tile Comprar Credito
-                                              //dense: true,
-                                              onTap: (){
-                                                  setState(() {
-                                                    _selectedTarjeta = false;
-                                                    _selectedCredito = !_selectedCredito;
-                                                  });
-                                              },
-                                              leading: _selectedCredito == false 
-                                              ?Icon(Icons.radio_button_unchecked, color: Colors.green,)
-                                              :Icon(Icons.radio_button_checked,color: Colors.white,),
-                                              title:Text( 
-                                                model.user.credito > totalAPagar 
-                                                ?'CREDITO'
-                                                :'COMPRAR CREDITO',
+                                      SizedBox(height: 5,),
+                                      Center( //credito disponible numero
+                                        child: Text( 
+                                          '\$' + double.parse(model.user.credito.toString()).toStringAsFixed(2),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: SizeConfig.resizeHeight(28),
+                                            fontFamily: 'Sen'
+                                          ),                            
+                                        ),
+                                      ),
+                                      SizedBox(height:5.0),
+                                      Center( //credito disponible texto
+                                        child: Text(//credito disponible had another read to the database
+                                                'Credito Disponible',
                                                 style: TextStyle(
+                                                  fontSize: SizeConfig.resizeHeight(12),
+                                                  fontFamily: 'Sen',
+                                                  color: Colors.grey
+                                                ),
+                                        ),
+                                      ),
+                                      SizedBox(height:SizeConfig.resizeHeight(10)),
+                                      Container( // metodo de pago
+                                        child: (model.user.credito == 0 || model.user.credito > totalAPagar)
+                                        ?Column( //if client doesnt have credit enought
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container( //credito tile
+                                              decoration: BoxDecoration(
+                                                color: _selectedCredito == false
+                                                ?Colors.white
+                                                :Colors.green,
+                                                borderRadius: BorderRadius.circular(25)
+                                              ),
+                                              child: ListTile( //Tile Comprar Credito
+                                                dense: true,
+                                                onTap: (){
+                                                    setState(() {
+                                                      _selectedTarjeta = false;
+                                                      _selectedCredito = !_selectedCredito;
+                                                    });
+                                                },
+                                                leading: _selectedCredito == false 
+                                                ?Icon(Icons.radio_button_unchecked, color: Colors.green,)
+                                                :Icon(Icons.radio_button_checked,color: Colors.white,),
+                                                title:Text( 
+                                                  model.user.credito > totalAPagar 
+                                                  ?'CREDITO'
+                                                  :'COMPRAR CREDITO',
+                                                  style: TextStyle(
+                                                    color: _selectedCredito == false
+                                                    ?Colors.green
+                                                    :Colors.white,
+                                                    fontSize: SizeConfig.resizeHeight(18),
+                                                    fontFamily: 'Poppins'),
+                                              ))
+                                            ),
+                                            SizedBox(height: SizeConfig.resizeHeight(5),),
+                                            Container( //tarjeta tile
+                                              decoration: BoxDecoration(
+                                                color: _selectedTarjeta == false
+                                                ?Colors.white
+                                                :Colors.green,
+                                                borderRadius: BorderRadius.circular(25)
+                                              ),
+                                              child: ListTile( // Tile Tarjeta
+                                                dense: true,
+                                                onTap: (){
+                                                    setState(() {
+                                                      _selectedCredito = false;
+                                                      _selectedTarjeta = !_selectedTarjeta;
+                                                    });
+                                                },
+                                                leading: _selectedTarjeta == false 
+                                                ?Icon(Icons.radio_button_unchecked,color: Colors.green,)
+                                                :Icon(Icons.radio_button_checked,color: Colors.white,),
+                                                title: Text(
+                                                  'TARJETA',
+                                                  style: TextStyle(
+                                                    color: _selectedTarjeta == false
+                                                    ?Colors.green
+                                                    :Colors.white,
+                                                    fontSize: SizeConfig.resizeHeight(18),
+                                                    fontFamily: 'Poppins'),
+                                              )),
+                                            ),
+                                          ],
+                                        )
+                                        :Column( //if client has credit
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: _selectedCredito == false
+                                                ?Colors.white
+                                                :Colors.green,
+                                                borderRadius: BorderRadius.circular(25)
+                                              ),
+                                              child: ListTile( //Tile usar Credito
+                                                dense: true,
+                                                onTap: (){
+                                                    setState(() {
+                                                     if((model.user.credito > totalAPagar) && (_selectedTarjeta == true)){
+                                                        _selectedCredito = false;
+                                                      }
+                                                      else{
+                                                        _selectedCredito = !_selectedCredito;
+                                                      }
+                                                    });
+                                                },
+                                                leading: _selectedCredito == false 
+                                                ?Icon(Icons.check_box_outline_blank,color: Colors.green,)
+                                                :Icon(Icons.check_box,color: Colors.white,),
+                                                title:Text('USAR CREDITO',style: TextStyle(
                                                   color: _selectedCredito == false
                                                   ?Colors.green
                                                   :Colors.white,
-                                                  fontSize: 18.0,
-                                                  fontFamily: 'Poppins'),
-                                            ))
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Container( //tarjeta tile
-                                            decoration: BoxDecoration(
-                                              color: _selectedTarjeta == false
-                                              ?Colors.white
-                                              :Colors.green,
-                                              borderRadius: BorderRadius.circular(25)
+                                                  fontSize: SizeConfig.resizeHeight(18), 
+                                                  fontFamily: 'Poppins'),)
+                                                ),
                                             ),
-                                            child: ListTile( // Tile Tarjeta
-                                              dense: true,
-                                              onTap: (){
-                                                  setState(() {
-                                                    _selectedCredito = false;
-                                                    _selectedTarjeta = !_selectedTarjeta;
-                                                  });
-                                              },
-                                              leading: _selectedTarjeta == false 
-                                              ?Icon(Icons.radio_button_unchecked,color: Colors.green,)
-                                              :Icon(Icons.radio_button_checked,color: Colors.white,),
-                                              title: Text(
-                                                'TARJETA',
-                                                style: TextStyle(
-                                                  color: _selectedTarjeta == false
+                                            SizedBox(height: SizeConfig.resizeHeight(5),),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: _selectedTarjeta == false
+                                                ?Colors.white
+                                                :Colors.green,
+                                                borderRadius: BorderRadius.circular(25)
+                                              ),
+                                              child: ListTile( // Tile Tarjeta
+                                                dense: true,
+                                                onTap: (){
+                                                    setState(() {
+                                                      if((model.user.credito > totalAPagar) && (_selectedCredito == true)){
+                                                        _selectedTarjeta = false;
+                                                      }
+                                                      else{
+                                                        _selectedTarjeta = !_selectedTarjeta;
+                                                      }
+                                                      
+                                                    });
+                                                },
+                                                leading: _selectedTarjeta == false 
+                                                ?Icon(Icons.check_box_outline_blank,color: Colors.green,)
+                                                :Icon(Icons.check_box ,color: Colors.white,),
+                                                title: Text('TARJETA',style:
+                                                 TextStyle(
+                                                   color: _selectedTarjeta == false
                                                   ?Colors.green
                                                   :Colors.white,
-                                                  fontSize: 18.0,
-                                                  fontFamily: 'Poppins'),
-                                            )),
-                                          ),
-                                        ],
-                                      )
-                                      :Column( //if client has credit
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: _selectedCredito == false
-                                              ?Colors.white
-                                              :Colors.green,
-                                              borderRadius: BorderRadius.circular(25)
+                                                   fontSize: SizeConfig.resizeHeight(18), 
+                                                   fontFamily: 'Poppins'),
+                                                )),
                                             ),
-                                            child: ListTile( //Tile usar Credito
-                                              dense: true,
-                                              onTap: (){
-                                                  setState(() {
-                                                   if((model.user.credito > totalAPagar) && (_selectedTarjeta == true)){
-                                                      _selectedCredito = false;
-                                                    }
-                                                    else{
-                                                      _selectedCredito = !_selectedCredito;
-                                                    }
-                                                  });
-                                              },
-                                              leading: _selectedCredito == false 
-                                              ?Icon(Icons.check_box_outline_blank,color: Colors.green,)
-                                              :Icon(Icons.check_box,color: Colors.white,),
-                                              title:Text('USAR CREDITO',style: TextStyle(
-                                                color: _selectedCredito == false
-                                                ?Colors.green
-                                                :Colors.white,
-                                                fontSize: 18.0, 
-                                                fontFamily: 'Poppins'),)
-                                              ),
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: _selectedTarjeta == false
-                                              ?Colors.white
-                                              :Colors.green,
-                                              borderRadius: BorderRadius.circular(25)
-                                            ),
-                                            child: ListTile( // Tile Tarjeta
-                                              dense: true,
-                                              onTap: (){
-                                                  setState(() {
-                                                    if((model.user.credito > totalAPagar) && (_selectedCredito == true)){
-                                                      _selectedTarjeta = false;
-                                                    }
-                                                    else{
-                                                      _selectedTarjeta = !_selectedTarjeta;
-                                                    }
-                                                    
-                                                  });
-                                              },
-                                              leading: _selectedTarjeta == false 
-                                              ?Icon(Icons.check_box_outline_blank,color: Colors.green,)
-                                              :Icon(Icons.check_box ,color: Colors.white,),
-                                              title: Text('TARJETA',style:
-                                               TextStyle(
-                                                 color: _selectedTarjeta == false
-                                                ?Colors.green
-                                                :Colors.white,
-                                                 fontSize: 18.0, 
-                                                 fontFamily: 'Poppins'),
-                                              )),
-                                          ),
-                                        ],
-                                      )
+                                          ],
+                                        )
+                                        ),
+                                    ],
+                                  )
+                                ),
+                                SizedBox(height:SizeConfig.resizeHeight(10)),
+                                FlatButton( //numeros a recargar son los correctos
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                                  color: Colors.blue[800],
+                                  onPressed: (){
+                                    setState(() {
+                                      numerosCorrectos = !numerosCorrectos;
+                                    });                                    
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      numerosCorrectos 
+                                      ? Icon(Icons.playlist_add_check, color: Colors.white,size: 20,)
+                                      : Icon(Icons.check_box_outline_blank, color:  Colors.white,size: 20,),
+                                      SizedBox(width: SizeConfig.resizeWidth(10),),
+                                      Text('Los numeros a recargar estan correctos.',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white
+                                        ),                                        
                                       ),
-                                   ],
-                                )
-                              ),
-                              SizedBox(height:10),
-                              Row(  //linea de botones confimar y cancelar
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  RaisedButton( //cancelar
-                                    elevation: 6,
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                    color: Colors.red[100],
-                                    onPressed: (){
-                                      listaRecargar.clear();
-                                      Navigator.pop(context);
-                                    },
-                                    child: Icon(Icons.close, size: 24,color:Colors.red[900])//Text('Cancelar',style: TextStyle(fontSize: 18,color: Colors.white, fontFamily: 'Poppins'),)
-                                  ),
-                                  RaisedButton( //confirmar
-                                    child: Icon(Icons.forward, size: 30,color: Colors.green[900],), //Text('Confirmar',style: TextStyle(fontSize: 18,color: Colors.white, fontFamily: 'Poppins'),)
-                                    elevation: 6,
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                    color: Colors.green[100],
-                                    onPressed: () async {      //confirmar action
-                                      //set to busy the UI to inform the clien thath we are working on the backend
-                                      setState(() {
-                                        busy = true;
-                                      });
-                                      
-                                      //return the option to checkout that the customer selected
-                                      var result = await model.confirmarCompra(_selectedCredito, _selectedTarjeta, totalAPagar, context, listaRecargar);
-
-                                      /*
-                                      1- solamente tarjeta de credito
-                                      3- no tiene suficiente credito tiene que soleccionar ambos pagos
-                                      4- elige comprar mas credito
-                                      otras- si e numero es doble esta mandando el nuevo credito luego de actualizado en el modelo
-                                      */
-                                      print(result.toString() + ' Dialogo de las Recargas');
-
-                                      if((result == 1)||(result == 3)){ //te lleva a la ventana de pago con tarjeta de credito
+                                    ],
+                                  )
+                                ),     
+                                SizedBox(height: SizeConfig.resizeHeight(5),),
+                                Row(  //linea de botones confimar y cancelar
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    RaisedButton( //cancelar
+                                      elevation: 6,
+                                      padding: EdgeInsets.symmetric(horizontal: 5),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                      color: Colors.red[100],
+                                      onPressed: (){
+                                        listaRecargar.clear();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Icon(Icons.close, size: SizeConfig.resizeHeight(24),color:Colors.red[900])//Text('Cancelar',style: TextStyle(fontSize: 18,color: Colors.white, fontFamily: 'Poppins'),)
+                                    ),
+                                    SizedBox(width: SizeConfig.resizeWidth(35),),
+                                    RaisedButton( //confirmar
+                                      child: Icon(Icons.forward, size: SizeConfig.resizeHeight(30),color: Colors.green[900],), //Text('Confirmar',style: TextStyle(fontSize: 18,color: Colors.white, fontFamily: 'Poppins'),)
+                                      elevation: 6,
+                                      padding: EdgeInsets.symmetric(horizontal: 5),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                      color: Colors.green[100],
+                                      onPressed: () async {      //confirmar action
+                                        
+                                      if((_selectedCredito || _selectedTarjeta) && ( _selectedTarjeta ||(totalAPagar < model.user.credito) ? numerosCorrectos : true)){
+                                        //set to busy the UI to inform the clien thath we are working on the backend
                                         setState(() {
-                                          busy = false;
+                                          busy = true;
                                         });
-                                        showDialog(
-                                        context: context,
-                                        builder: (context){
-                                          return CustomAlertDialogs(
-                                            selection: result,
-                                            totalAPagar: totalAPagar,
-                                            contactosARecargar: listaRecargar, //envio la lista de los contactos a recargar
-                                          );
-                                        });                                        
-                                      } 
-                                      else if (result == 4){//te envia a comprar credito
-                                        setState((){
-                                          busy = false;
-                                        });
-                                        Navigator.pushNamed(context, ComprarCreditoUI.route);
-                                      }
-                                      else if(result is double){ //pagar recarga con credito solamente
-                                        setState((){
-                                          busy = false;
-                                        });
-                                        showDialog(
-                                          barrierDismissible: false,
+                                        
+                                        //return the option to checkout that the customer selected
+                                        var result = await model.confirmarCompra(_selectedCredito, _selectedTarjeta, totalAPagar, context, listaRecargar);
+
+                                        /*
+                                        1- solamente tarjeta de credito
+                                        3- no tiene suficiente credito tiene que soleccionar ambos pagos
+                                        4- elige comprar mas credito
+                                        otras- si e numero es doble esta mandando el nuevo credito luego de actualizado en el modelo
+                                        */
+                                        print(result.toString() + ' Dialogo de las Recargas');
+
+                                        if((result == 1)||(result == 3)){ //te lleva a la ventana de pago con tarjeta de credito
+                                          setState(() {
+                                            busy = false;
+                                          });
+                                          showDialog(
                                           context: context,
                                           builder: (context){
                                             return CustomAlertDialogs(
-                                              selection: 11,
-                                          );
-                                        });
+                                              selection: result,
+                                              totalAPagar: totalAPagar,
+                                              contactosARecargar: listaRecargar, //envio la lista de los contactos a recargar
+                                            );
+                                          });                                        
+                                        } 
+                                        else if (result == 4){//te envia a comprar credito
+                                          setState((){
+                                            busy = false;
+                                          });
+                                          Navigator.pushNamed(context, ComprarCreditoUI.route);
+                                        }
+                                        else if(result is double){ //pagar recarga con credito solamente
+                                          setState((){
+                                            busy = false;
+                                          });
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (context){
+                                              return CustomAlertDialogs(
+                                                selection: 11,
+                                            );
+                                          });
+                                        }
                                       }                                        
-                                    },
-                                  ),
-                                ],
-                              )
-                            ],
+                                    },),
+                                  ],
+                                ),
+                                SizedBox(height: SizeConfig.resizeHeight(10),)
+                              ],
+                              ),
                             ),
                           )
                           :Container(
-                            height: 330,
-                            width: 300,
-                            child: Helpers.customProgressIndicator())
+                            height: SizeConfig.resizeHeight(330),
+                            width: SizeConfig.resizeWidth(300),
+                            child: Center(child: Helpers.customProgressIndicator()))
                         );
                       },
                     );
@@ -481,24 +513,50 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
     return Row(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: Icon(Icons.search,size: 20.0,),
+          padding: EdgeInsets.only(left: SizeConfig.resizeWidth(15)),
+          child: Icon(Icons.search,size: SizeConfig.resizeHeight(20),),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 15),
+          padding: EdgeInsets.only(left: SizeConfig.resizeWidth(15)),
           child: SizedBox(
-            width: 200,
+            width: SizeConfig.resizeWidth(200),
             child: TextField(
               keyboardType: TextInputType.text,
               onChanged: (text){
+
                 text = text.toLowerCase();
-                setState(() {
-                  lists.nombredisplay  =  lists.nombres.where((nombre){
-                    nombre = nombre.toLowerCase();
-                    var result = nombre.contains(text);
-                    return result;
-                  }).toList();
+                List<String> newNombres = new List<String>();
+                List<String> newTelefonos = new List<String>();
+
+                setState((){
+                  
+                  if(text != ''){
+
+                    lists.contactos.values.where((value){
+                      var result = value['nombre'].toString().toLowerCase().contains(text);
+                      if(result){
+                        newNombres.add(value['nombre']);
+                        newTelefonos.add(value['telefono']);
+                      }
+                      return result;
+                    }).toList();
+
+                    lists.nombredisplay = newNombres;
+                    lists.telefonos = newTelefonos;
+
+                  } else {
+                    lists.nombredisplay = lists.nombres;
+                    lists.telefonos = lists.telefonosBAK;
+                  }
+
+                                    
+                  // lists.nombredisplay  =  lists.nombres.where((nombre){
+                  //   nombre = nombre.toLowerCase();
+                  //   var result = nombre.contains(text);
+                  //   return result;
+                  // }).toList();
                 });
+              
               },
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
@@ -507,7 +565,7 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ) ,
-                hintText: '...Buscar Contacto',
+                hintText: 'Buscar Contacto...',
                 hintStyle: TextStyle(
                   fontFamily: 'Sen',
                 )
@@ -574,28 +632,63 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
         
       },
       leading: IconButton(
-        icon: lists.contactos[tel]['isSelected'] == false ? Icon(Icons.check_box_outline_blank, color: Colors.grey[200],) : Icon(Icons.check,color: Colors.green,size: 30,), 
-        onPressed: (){
+        icon: lists.contactos[tel]['isSelected'] == false ? Icon(Icons.check_box_outline_blank, color: Colors.grey[200],) : Icon(Icons.check,color: Colors.green,size: SizeConfig.resizeHeight(30),), 
+        onPressed: () async {
+          
           setState(() {
-            lists.contactos[tel]['isSelected'] = !lists.contactos[tel]['isSelected'];
+            numberIsWrong = false;
           });
+  
+          String digitsNeeded = tel.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
+          
+          if(digitsNeeded.length > 4){
+            digitsNeeded = digitsNeeded.substring(0,4);
+          }
+          
+          if((lists.contactos[tel]['isSelected'] == false)&&(digitsNeeded != '+535')){
+            setState(() {
+              numberIsWrong = true; //set this variable to true letting know the system that there is a number wrong
+            });
+            //crear el ui para poner el telefono correctamente si el detecta que el telefono es incorrecto
+            await showModalBottomSheet(
+              isScrollControlled: true,
+              shape:RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+              isDismissible: false, context: context, 
+              builder: (context){
+                return _fixPhoneNumberBeforeSend(tel, context, model);
+            });
+          }
+          
+          print(digitsNeeded);
+          print(numberIsWrong);
+  
+          //si el numero fue corregido entonces lo selecciona o esta correcto tambuien lo selecciona
+          if((numberIsWrong == false)&&(digitsNeeded == '+535')&&(tel.length > 9)){
+            setState(() {
+              lists.contactos[tel]['isSelected'] = !lists.contactos[tel]['isSelected'];
+            });
+          }else{ // tuve que poner esto porque una vez que pone la bandera numberIsWrong a true no me permite actualizar ningun otro item de la lista asi el numero este conrrecto
+            setState(() {
+              numberIsWrong = false;
+            });
+          }
         }
-        ),
+      ),
       trailing: lists.contactos[tel]['isSelected'] == false 
-      ?Icon( FontAwesomeIcons.plug, color:Colors.green[100], size: 25.0,)
+      ?Icon( FontAwesomeIcons.plug, color:Colors.green[100], size: SizeConfig.resizeHeight(25),)
       :escogerPrecio(context,lists,tel) ,
-      contentPadding: EdgeInsets.only(left: 5.0, right: 20.0),
+      contentPadding: EdgeInsets.only(left: SizeConfig.resizeWidth(5), right: SizeConfig.resizeWidth(20)),
       title: Text( //nombre
         lists.nombredisplay[index],
         style: TextStyle(
             fontFamily: 'Poppins',
-            fontSize: 16.0,
+            fontSize: SizeConfig.resizeHeight(16),
             fontWeight: FontWeight.w600,
             color: Colors.grey[800]),
       ),
       subtitle: Text( // telefono
         lists.telefonos[index],
-        style: TextStyle(fontFamily: 'Roboto', fontSize: 14.0, color: Colors.grey[900]),
+        style: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.resizeHeight(14), color: Colors.grey[900]),
       ),
     );
   }
@@ -613,10 +706,10 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
         )
       ),
       isDense: false,
-      iconSize: 22,
+      iconSize: SizeConfig.resizeHeight(22),
       value: lists.contactos[tel]['selectedAmount'],
       items: _prices.map((value) => DropdownMenuItem(
-          child: Text(value,style: TextStyle(fontSize: 18, fontFamily: 'Sen'),),
+          child: Text(value,style: TextStyle(fontSize: SizeConfig.resizeHeight(18), fontFamily: 'Sen'),),
           value: value,
       )).toList(),
       onChanged: (selected){
@@ -642,15 +735,15 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
           children: <Widget>[
             Center(child: Text( //Modificar Contacto
               'Modificar Contacto',
-              style: TextStyle(fontFamily: 'Poppins',fontSize: 22,color: Colors.grey[800]),
+              style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(22),color: Colors.grey[800]),
             ),),
-            SizedBox(height:10),
+            SizedBox(height:SizeConfig.resizeHeight(10)),
             Center(child: Text( //mensaje del fomato no valido
               'El formato del numero $tel no es valido, por favor modifique el numero para continuar.',
-              style: TextStyle(fontFamily: 'Poppins',fontSize: 16, color: Colors.grey[800] ),
+              style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(16), color: Colors.grey[800] ),
               maxLines: 3,
             ),),
-            SizedBox(height:10),
+            SizedBox(height:SizeConfig.resizeHeight(10)),
             Padding( // telefono
               padding: const EdgeInsets.symmetric(horizontal:20.0),
               child: Form(
@@ -677,11 +770,11 @@ class _MainCarouselRecargarState extends State<MainCarouselRecargar> {
                 ),
               ),
             ),                                      
-            SizedBox(height:20),
+            SizedBox(height:SizeConfig.resizeHeight(20)),
             Padding(  //boton salvar
               padding: EdgeInsets.only(bottom:MediaQuery.of(context).viewInsets.bottom),
               child: FlatButton( //boton salvar
-                padding: EdgeInsets.symmetric(horizontal: 80),
+                padding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(80)),
                 color: Colors.green,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0)

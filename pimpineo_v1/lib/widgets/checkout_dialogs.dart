@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
 import 'package:pimpineo_v1/view/login.dart';
 import 'package:pimpineo_v1/view/us/comprar_credito.dart';
 import 'package:pimpineo_v1/view/us/us_lobby.dart';
@@ -36,50 +37,45 @@ class _CustomAlertDialogsState extends State<CustomAlertDialogs> {
           contentPadding: EdgeInsets.only(top: 25, right: 15, left: 15),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          content: Container(
-            width: 280,
-            height: 180,
-            child: Column(
-              children: <Widget>[
-                Text(
-                    'Credito no suficiente. \nSus variantes son: \n-Elegir las dos opciones de pago. \n-Comprar mas credito.',
-                    style: TextStyle(fontFamily: 'Poppins'),),
-                Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    FlatButton(   //cancelar
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: Colors.red,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.keyboard_backspace,color: Colors.white, size: 24,)//Text(
-                        //   'Atras',
-                        //   style: TextStyle(
-                        //       fontSize: 16,
-                        //       color: Colors.white,
-                        //       fontFamily: 'Poppins'),
-                        // )
-                    ),
-                    FlatButton(  //comprar
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: Colors.green,
-                        onPressed: () {
-                          Navigator.popAndPushNamed(
-                              context, ComprarCreditoUI.route);
-                        },
-                        child: Icon(Icons.shopping_cart, color: Colors.white,)
-                     ),
-                    ],
+          content: FittedBox(
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                      'Credito no suficiente. \nSus variantes son: \n-Elegir las dos opciones de pago. \n-Comprar mas credito.',
+                      style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(14)),),
+                  Padding(
+                  padding: EdgeInsets.only(top: SizeConfig.resizeHeight(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      FlatButton(   //cancelar
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          color: Colors.red,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.keyboard_backspace,color: Colors.white, size: SizeConfig.resizeHeight(25),)
+                      ),
+                      SizedBox(width: SizeConfig.resizeWidth(20),),
+                      FlatButton(  //comprar
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          color: Colors.green,
+                          onPressed: () {
+                            Navigator.popAndPushNamed(
+                                context, ComprarCreditoUI.route);
+                          },
+                          child: Icon(Icons.shopping_cart, color: Colors.white,size: SizeConfig.resizeHeight(25),)
+                       ),
+                      ],
+                  ),
                 ),
+                ],
               ),
-              ],
             ),
           ),
         );
@@ -96,29 +92,23 @@ class _CustomAlertDialogsState extends State<CustomAlertDialogs> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           content: Container(
-            height: 230,
+            height: SizeConfig.resizeHeight(230),
             child: Column(
               children: <Widget>[
                 Text(
                     'El cobro minimo para tarjetas de credito es \$ ${Helpers.minAmount}. Su credito sera aplicado parcialmente.'
                     +'\nPagar con credito: \$${(widget.totalAPagar - Helpers.minAmount).toStringAsFixed(2)}\nPagar con tarjeta: \$ ${Helpers.minAmount}\nTotal: \$${widget.totalAPagar.toStringAsFixed(2)}.',
-                    style: TextStyle(fontFamily: 'Poppins'),),
-                SizedBox(height: 20,),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton(   //thumb up
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: Colors.green,
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Helpers.clienteAgreed = true;
-                        },
-                        child: Icon(Icons.thumb_up, color: Colors.white)
-                    ),
-                  ],
+                    style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(14))),
+                SizedBox(height: SizeConfig.resizeHeight(20),),
+                FlatButton(   //thumb up
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.green,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Helpers.clienteAgreed = true;
+                    },
+                    child: Icon(Icons.thumb_up, color: Colors.white, size: SizeConfig.resizeHeight(25),)
                 ),
               ],
             ),
@@ -129,38 +119,34 @@ class _CustomAlertDialogsState extends State<CustomAlertDialogs> {
        return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          content: Text(
-              'Su credito ha sido aplicado a la compra, muchas gracias!!',
-              style: TextStyle(fontFamily: 'Poppins'),),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 30.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 15.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 90.0),
-                    child: FlatButton(   //thumb up
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: Colors.green,
-                        onPressed: () {
-                          Helpers.lastroute = 'recargas';
-                          Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route, (Route<dynamic> route) => false);
-                        },
-                        child: Icon(Icons.thumb_up, color: Colors.white)
+          content: Container(
+            height: SizeConfig.resizeHeight(150),
+            child: Column(
+              children: <Widget>[
+                Text(
+                    'Su credito ha sido aplicado a la compra, muchas gracias!!',
+                    style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(18)),),
+                SizedBox(
+                  height: SizeConfig.resizeHeight(25),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                  child: FlatButton(   //thumb up
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      color: Colors.green,
+                      onPressed: () {
+                        Helpers.lastroute = 'recargas';
+                        Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route, (Route<dynamic> route) => false);
+                      },
+                      child: Icon(Icons.thumb_up, color: Colors.white)
+                      ),
                     ),
-                  ),
-                ],
-              ),
+              ],
             ),
-          ],
-        );
+          ),
+       );
        break;
       case 12: // este es un comodin que va a mostrar lo que se le envie en el texto ademas del boton de thumbs up y te direcciona al log in
        return AlertDialog(
@@ -168,14 +154,14 @@ class _CustomAlertDialogsState extends State<CustomAlertDialogs> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           content: Container(
-            height: MediaQuery.of(context).size.height * 0.20,
-            width: 300,
+            height: SizeConfig.resizeHeight(MediaQuery.of(context).size.height * 0.20),
+            width: SizeConfig.resizeWidth(300),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(widget.text,style: TextStyle(fontFamily: 'Poppins'),),
-                SizedBox(height: 40,),
+                SizedBox(height: SizeConfig.resizeHeight(40),),
                 Center(
                   child: FlatButton(   //thumb up
                       shape: RoundedRectangleBorder(
@@ -197,27 +183,28 @@ class _CustomAlertDialogsState extends State<CustomAlertDialogs> {
           contentPadding: EdgeInsets.only(top:20,right:20,left:20,bottom: 10),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          content: Container(
-            height: MediaQuery.of(context).size.height * 0.30,
-            width: 300,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(widget.text,style: TextStyle(fontFamily: 'Poppins'),),
-                SizedBox(height: 30,),
-                Center(
-                  child: FlatButton(   //thumb up
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      color: Colors.green,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.thumb_up, color: Colors.white)
+          content: FittedBox(
+            child: Container(
+              width: SizeConfig.resizeWidth(300),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(widget.text,style: TextStyle(fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(16)),),
+                  SizedBox(height: SizeConfig.resizeHeight(15),),
+                  Center(  //thumb up
+                    child: FlatButton(   //thumb up
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.green,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.thumb_up, color: Colors.white,size: SizeConfig.resizeHeight(25),)
+                    ),
                   ),
-                ),
-             ],
+               ],
+              ),
             ),
           ),
         );

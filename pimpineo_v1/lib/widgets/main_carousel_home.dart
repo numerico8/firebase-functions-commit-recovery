@@ -8,6 +8,8 @@ import 'package:pimpineo_v1/view/us/transacciones.dart';
 import 'package:pimpineo_v1/viewmodels/main_carousel_home_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 
 class MainCarouselHome extends StatefulWidget {
@@ -47,28 +49,28 @@ class _MainCarouselHomeState extends State<MainCarouselHome> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 20.0),
+                  padding: EdgeInsets.only(top: SizeConfig.resizeHeight(20)),
                   child: Row( //home row
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start, 
                     children: <Widget>[
-                    Icon(FontAwesomeIcons.home, color: Theme.of(context).primaryColor, size: 30.0,),
-                    SizedBox(width:15.0,),
+                    Icon(FontAwesomeIcons.home, color: Theme.of(context).primaryColor, size:  SizeConfig.resizeHeight(30),),
+                    SizedBox(width: SizeConfig.resizeWidth(15),),
                     Text( //Inicio
                       'Inicio',
                       style: TextStyle(
                           color: Colors.blue[800],
-                          fontSize: 28.0,
+                          fontSize:  SizeConfig.resizeHeight(28),
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.w700),
                     ),
                   ]),
                 ),
-                SizedBox(height: 15.0,),
+                SizedBox(height: SizeConfig.resizeHeight(15),),
                 Container(     //container with the credit values
                   color: Theme.of(context).scaffoldBackgroundColor,  //container color
-                  height: initialPicture['hay_recarga'] ? 590 : 300,
-                  width: 360.0,
+                  height: initialPicture['hay_recarga'] ? SizeConfig.resizeHeight(610) : SizeConfig.resizeHeight(300),
+                  width: SizeConfig.resizeWidth(360),
                   child: Column(
                     children: <Widget>[
                       Padding( //container del credito
@@ -91,7 +93,7 @@ class _MainCarouselHomeState extends State<MainCarouselHome> {
                             SizedBox(width: 10.0,),
                         ],),
                       ),              
-                      SizedBox(height:10.0),
+                      SizedBox(height: SizeConfig.resizeHeight(10)),
                       Text(//credito disponible wording read the database
                               'Credito Disponible',
                               style: TextStyle(
@@ -99,9 +101,9 @@ class _MainCarouselHomeState extends State<MainCarouselHome> {
                                 color: Colors.grey
                               ),
                             ),
-                      SizedBox(height:40.0),
+                      SizedBox(height: SizeConfig.resizeHeight(40)),
                       Padding( //boton comprar credito
-                        padding: EdgeInsets.symmetric(horizontal: 80.0),
+                        padding: EdgeInsets.symmetric(horizontal:  SizeConfig.resizeWidth(80)),
                         child: FlatButton( //credito button
                           onPressed: (){
                             Navigator.of(context).push(Router.createRoute(ComprarCreditoUI()));
@@ -117,13 +119,13 @@ class _MainCarouselHomeState extends State<MainCarouselHome> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(Icons.add_shopping_cart,color: Colors.black87,),
-                                SizedBox(width: 10.0),
+                                SizedBox(width:  SizeConfig.resizeWidth(10)),
                                 Text(
                                   'Credito',
                                   style: TextStyle(
                                     color: Colors.black87,
                                     fontFamily: 'Sen',
-                                    fontSize: 22.0,
+                                    fontSize:  SizeConfig.resizeHeight(22),
                                     fontWeight: FontWeight.w600
                                   ),
                                 )
@@ -132,9 +134,9 @@ class _MainCarouselHomeState extends State<MainCarouselHome> {
                           )
                         ),
                       ),
-                      SizedBox(height: 10.0),
+                      SizedBox(height:  SizeConfig.resizeHeight(10)),
                       Padding( //chequear nuevas transacciones
-                       padding: EdgeInsets.symmetric(horizontal: 50.0,),
+                       padding: EdgeInsets.symmetric(horizontal:  SizeConfig.resizeWidth(50),),
                        child: FlatButton( //transacciones
                          onPressed: () async {
                           if(transacciones != null){
@@ -152,26 +154,14 @@ class _MainCarouselHomeState extends State<MainCarouselHome> {
                              mainAxisAlignment: MainAxisAlignment.center,
                              crossAxisAlignment: CrossAxisAlignment.center,
                              children: <Widget>[
-                               newTransactions == false
-                               ?Container()
-                               :Padding( //alerta que hay nuevas transascciones
-                                 padding: const EdgeInsets.only(right:10.0),
-                                 child: Container(
-                                   child: CircleAvatar(
-                                     child: Text('2',style: TextStyle(color: Colors.white, fontSize: 12),),
-                                     radius: 8,
-                                     backgroundColor: Colors.red,
-                                   ),
-                                 ),
-                               ),
                                Icon(Icons.message,color: Colors.white,),
-                               SizedBox(width: 10.0),
+                               SizedBox(width:  SizeConfig.resizeWidth(10)),
                                Text( //transacciones text
                                  'Transacciones',
                                  style: TextStyle(
                                    color: Colors.grey[100],
                                    fontFamily: 'Sen',
-                                   fontSize: 22.0,
+                                   fontSize:  SizeConfig.resizeHeight(22),
                                    fontWeight: FontWeight.w600
                                  ),
                                )
@@ -180,11 +170,11 @@ class _MainCarouselHomeState extends State<MainCarouselHome> {
                          )
                        ),
                          ),
-                      SizedBox(height: 10.0),
+                      SizedBox(height:  SizeConfig.resizeHeight(10)),
                       initialPicture['hay_recarga']
                       ?Container(
-                        height: 340,
-                        width: 400,                   
+                        height: SizeConfig.resizeHeight(340),
+                        width: SizeConfig.resizeWidth(400),                   
                         child: Image.network(
                           initialPicture['url'],
                           fit: BoxFit.fill                        

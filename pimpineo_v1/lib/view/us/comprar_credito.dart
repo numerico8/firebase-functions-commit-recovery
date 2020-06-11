@@ -7,6 +7,8 @@ import 'package:pimpineo_v1/viewmodels/comprar_credito_model.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
 import 'package:pimpineo_v1/services/helpers.dart';
 import 'package:provider/provider.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 class ComprarCreditoUI extends StatefulWidget {
   static const String route = "/comprar_credito";
@@ -31,18 +33,18 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
             elevation: 0,
             centerTitle: true,
             backgroundColor: Colors.white,
-            title: Text(//Mi Perfil
+            title: Text(//comprar credito
                 'Comprar Credito',
                 style: TextStyle(
                     color: Colors.blue[800],
                     fontFamily: 'Poppins',
-                    fontSize: 22.0)),
+                    fontSize: SizeConfig.resizeHeight(22))),
             leading: IconButton(  // boton de atras
               icon: Padding(
                 padding: EdgeInsets.only(left: 5.0),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 30.0,
+                  size: SizeConfig.resizeHeight(30),
                   color: Colors.blue[800],
                 ),
               ),
@@ -61,22 +63,21 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[                                
-                  SizedBox(height: 10),
+                  SizedBox(height: SizeConfig.resizeHeight(10)),
                   Container( //container con el numero del credito seleccionado para agregar que se esta agregando solamente
-                  height: 100,
-                  decoration: BoxDecoration(
+                    height: SizeConfig.resizeHeight(100),
+                    decoration: BoxDecoration(
                       color: Colors.blue[800],
                       borderRadius: BorderRadius.circular(10),
-                      //border: Border.all(color: Colors.blue[800], width: 4.0)
                     ),
-                  child: Center(child: Text('\$'+ totalAPagar,style: 
+                    child: Center(child: Text('\$'+ totalAPagar,style: 
                     TextStyle(fontFamily: 'Sen',color:Colors.white,
-                    fontSize: totalAPagar.length < 7 ? 80 : 50, //si el numero del total a pagar es muy grande entonces cambia el tamano de la variable
+                    fontSize: totalAPagar.length < 7 ? SizeConfig.resizeHeight(80) : SizeConfig.resizeHeight(50), //si el numero del total a pagar es muy grande entonces cambia el tamano de la variable
                       ),maxLines: 1,)),
-                ),
-                  SizedBox(height: 20,),
+                  ),
+                  SizedBox(height: SizeConfig.resizeHeight(20),),
                   Container(
-                    height: 380,
+                    height: SizeConfig.resizeHeight(380),
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.blue[800],
@@ -162,7 +163,7 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
                           ),
                         ),
                         Padding( //Divider
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(10)),
                           child: Container(
                             color: Colors.white,
                             height: 3.0,
@@ -246,7 +247,7 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
                           ),
                         ),
                         Padding( //Divider
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(10)),
                           child: Container(
                             color: Colors.white,
                             height: 3.0,
@@ -330,7 +331,7 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
                           ),
                         ),
                         Padding( //Divider
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(10)),
                           child: Container(
                             color: Colors.white,
                             height: 3.0,
@@ -428,13 +429,13 @@ class _ComprarCreditoUIState extends State<ComprarCreditoUI> {
                         ],
                     ),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(height: SizeConfig.resizeHeight(15),),
                   Center( //boton de comprar
                     child: FlatButton(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),                        
-                      padding: EdgeInsets.symmetric(horizontal: 100, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(100), vertical: SizeConfig.resizeHeight(5)),
                       color: Colors.blue[800],
-                      child: Text('Comprar', style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: 26),),
+                      child: Text('Comprar', style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(26)),),
                       onPressed: (){
                         if(double.parse(totalAPagar) > Helpers.minAmount){
                           Helpers.fromComprarPage = true;

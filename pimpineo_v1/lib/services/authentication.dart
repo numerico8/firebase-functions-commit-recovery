@@ -157,7 +157,7 @@ class AuthenticationService {
       return result;
     }
     else{
-      return 'aborto operacion';
+      return 'La operacion fue cancelada, usualmente esto ocurre cuando el usuario aborta el proceso de registro.';
     }
   }
 

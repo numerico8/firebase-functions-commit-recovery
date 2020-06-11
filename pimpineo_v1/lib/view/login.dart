@@ -8,6 +8,9 @@ import 'package:pimpineo_v1/viewmodels/login_viewmodel.dart';
 import 'package:pimpineo_v1/widgets/log_in_form.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:pimpineo_v1/services/app_theme.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 class LogIn extends StatefulWidget {
   static const String route = '/log_in';
@@ -81,13 +84,10 @@ class _LogInState extends State<LogIn> {
                         padding: const EdgeInsets.only(top:5.0),
                         child: Center(
                           child: Container(
-                            height: 80.0,
+                            height: 11.7 * SizeConfig.blockSizeVertical,
                             child: Text( //logo
                               'Pimpineo',
-                              style: TextStyle(
-                                  color: Colors.blue[800],
-                                  fontFamily: 'Pacifico',
-                                  fontSize: 40.0),
+                              style: AppTheme.headlineStyle,
                             ),
                           ),
                         ),
@@ -95,24 +95,24 @@ class _LogInState extends State<LogIn> {
                       Expanded( //background image
                         child: Image.asset('images/2.png'),
                       ),
-                      ],
+                     ],
                   ),
                   SingleChildScrollView(        //elevated box
                     child: Padding(
                     padding:
-                        EdgeInsets.only(left: 20.0, right: 20.0, top: 220.0),
+                        EdgeInsets.only(left: SizeConfig.resizeWidth(20), right: SizeConfig.resizeWidth(20), top: SizeConfig.resizeHeight(220)),
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: 30.0),
+                        SizedBox(height: SizeConfig.resizeHeight(30)),
                         model.state == ViewState.Busy
                         ? Padding(   //circular porgresss indicator 
-                          padding: const EdgeInsets.only(top: 60.0),
+                          padding: EdgeInsets.only(top: SizeConfig.resizeHeight(60)),
                           child: Container(
                             height: 80,
                             width: 80,
                             child: Stack(
-                          children: <Widget>[
-                            Center(
+                              children: <Widget>[
+                                Center(
                               child: CircleAvatar(
                                 radius: 38,
                                 backgroundColor: Colors.blue[800],
@@ -129,7 +129,7 @@ class _LogInState extends State<LogIn> {
                                 ),
                               ),
                             ),
-                            Center(
+                                Center(
                               child: SizedBox(
                                 height: 60,
                                 width: 60,
@@ -139,8 +139,8 @@ class _LogInState extends State<LogIn> {
                                   backgroundColor: Colors.white,
                             ),
                               ),)
-                          ],
-                        ),
+                              ],
+                            ),
                           ),
                         )
                         : Form(

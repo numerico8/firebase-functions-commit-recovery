@@ -9,6 +9,8 @@ import 'package:pimpineo_v1/view/base_view.dart';
 import 'package:pimpineo_v1/viewmodels/contacts_viewmodel.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
 import 'package:provider/provider.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
+
 
 
 class MainCarouselContactos extends StatefulWidget {
@@ -69,19 +71,19 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                 Icon( // icon before Mis contactos
                 FontAwesomeIcons.addressBook,
                 color: Theme.of(context).primaryColor,
-                size: 30.0,
+                size:  SizeConfig.resizeHeight(30),
               ),
-                SizedBox(width: 15.0, ),
+                SizedBox(width: SizeConfig.resizeWidth(15), ),
                 Text(            //mis contactos
                 'Mis Contactos',
                 style: TextStyle(
                     color: Colors.blue[800],
-                    fontSize: 28.0,
+                    fontSize:  SizeConfig.resizeHeight(28),
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w700),
               ),
             ]),
-            SizedBox(height: 20.0,),
+            SizedBox(height:  SizeConfig.resizeHeight(20),),
             Container(      //Listview container
                 decoration: BoxDecoration(
                     color: Colors.grey[100],
@@ -96,15 +98,15 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                           offset: Offset(0.0, -6.0),
                           blurRadius: 5.0)
                     ]),
-                height: 400.0,
-                width: 360.0,
+                height:  SizeConfig.resizeHeight(400),
+                width:  SizeConfig.resizeWidth(360),
                 child:ListView.separated(     //Lista
                       separatorBuilder: (context, index) {     //separator container      
                         return Center(
                           child: Container(
                             color: Colors.grey[400],
                             height: 1.0,
-                            width: 330.0,
+                            width:  SizeConfig.resizeWidth(330),
                           ),
                         );
                       },
@@ -113,7 +115,7 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                         return index == 0 ? _searchBar(lists) :  _listItem(lists,index-1,model);
                       }),),
             Padding(       //add button
-              padding: EdgeInsets.symmetric(horizontal: 25.0),
+              padding: EdgeInsets.symmetric(horizontal:  SizeConfig.resizeWidth(25)),
               child: RaisedButton(         // accion de crear el nuevo contacto      
                   elevation: 2,
                   onPressed: () {  // accion de crear el nuevo contacto 
@@ -363,15 +365,15 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                       Icon(
                         Icons.group_add,
                         color:Colors.white,
-                        size: 28.0,
+                        size: SizeConfig.resizeHeight(28),
                       ),
-                      SizedBox(width: 10.0),
+                      SizedBox(width: SizeConfig.resizeWidth(10)),
                       Text(
                         'Crear Contacto',
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Sen',
-                            fontSize: 20.0,
+                            fontSize: SizeConfig.resizeHeight(20),
                             fontWeight: FontWeight.w600),
                       )
                     ],
@@ -391,24 +393,43 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
     return Row(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: Icon(Icons.search,size: 20.0,),
+          padding: EdgeInsets.only(left: SizeConfig.resizeWidth(15)),
+          child: Icon(Icons.search,size: SizeConfig.resizeHeight(20),),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 15),
+          padding: EdgeInsets.only(left: SizeConfig.resizeWidth(15)),
           child: SizedBox(
             width: 200,
             child: TextField(//buscar textfield
               keyboardType: TextInputType.text,
               onChanged: (text){
+                
                 text = text.toLowerCase();
-                setState(() {
-                  lists.nombredisplay = lists.nombres.where((nombre){
-                    nombre = nombre.toLowerCase();
-                    var result = nombre.contains(text);
-                    return result;
-                  }).toList();
+                List<String> newNombres = new List<String>();
+                List<String> newTelefonos = new List<String>();
+
+                setState((){
+                  
+                  if(text != ''){
+
+                    lists.contactos.values.where((value){
+                      var result = value['nombre'].toString().toLowerCase().contains(text);
+                      if(result){
+                        newNombres.add(value['nombre']);
+                        newTelefonos.add(value['telefono']);
+                      }
+                      return result;
+                    }).toList();
+
+                    lists.nombredisplay = newNombres;
+                    lists.telefonos = newTelefonos;
+
+                  } else {
+                    lists.nombredisplay = lists.nombres;
+                    lists.telefonos = lists.telefonosBAK;
+                  }
                 });
+                    
               },
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
@@ -417,7 +438,7 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ) ,
-                hintText: '...Buscar Contacto',
+                hintText: 'Buscar Contacto...',
                 hintStyle: TextStyle(
                   fontFamily: 'Sen',
                 )
@@ -447,18 +468,18 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                lists.contactos[tel]['isSelected'] = !lists.contactos[tel]['isSelected'];
              });
            },
-           contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+           contentPadding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(20)),
            title: Text( //nombre
              lists.nombredisplay[index], 
              style: TextStyle(
                 fontFamily: 'Poppins',
-                fontSize: 16.0,
+                fontSize: SizeConfig.resizeHeight(16),
                 fontWeight: FontWeight.w600,
                 color: Colors.grey[800]),
            ),
           subtitle: Text( // telefono
             lists.telefonos[index],
-            style: TextStyle(fontFamily: 'Roboto', fontSize: 14.0, color: Colors.grey[900]),
+            style: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.resizeHeight(14), color: Colors.grey[900]),
           ),
           trailing: GestureDetector( // tap delete icon action 
             onTap: (){ // tap delete icon alert dialog
@@ -468,52 +489,53 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                 builder: (context) {
                   return Center(
                     child: AlertDialog(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                      contentPadding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(20), vertical: SizeConfig.resizeHeight(20)),
                       elevation: 6.0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)
                       ),
-                      content: Container(
-                        width: 300.0,
-                        height: MediaQuery.of(context).size.height * 0.30,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container( //boton de cerrar
-                              margin: EdgeInsets.only(left:225),
-                              child: GestureDetector(
-                                child: Icon(Icons.close),
-                                onTap: (){Navigator.pop(context);},
-                              )
-                            ),
-                            SizedBox(height: 15.0,),   
-                            Text( //palabreo del dialogo para borrar
-                              'Seguro desea borrar a ${lists.nombredisplay[index].split(' ')[0].toUpperCase()} de su lista de contactos?',
-                              style:TextStyle(fontFamily: 'Poppins'),
-                            ),
-                            SizedBox(height: 4.0,),
-                            Text(
-                              'Mantenga el boton presionado.',
-                              style:TextStyle(fontFamily: 'Poppins'),
-                            ),
-                            SizedBox(height: 25.0,),
-                            Center( // boton de borrar
-                              child: Container(
-                                width: 150,
-                                child: FlatButton(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                                  color: Colors.red[400],
-                                  onLongPress: (){ //accion del boton borrar
-                                    
-                                    model.borrarContacto(tel, context);
-                                    Navigator.pop(context);
-                                  },
-                                  onPressed: null,
-                                  child: Icon(Icons.delete_forever, color: Colors.white,))
+                      content: FittedBox(
+                        child: Container(
+                          width: SizeConfig.resizeWidth(300),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Container( //boton de cerrar
+                                margin: EdgeInsets.only(left:SizeConfig.resizeWidth(250)),
+                                child: GestureDetector(
+                                  child: Icon(Icons.close),
+                                  onTap: (){Navigator.pop(context);},
+                                )
                               ),
-                            )
-                          ],
+                              SizedBox(height: SizeConfig.resizeHeight(15),),   
+                              Text( //palabreo del dialogo para borrar
+                                'Seguro desea borrar a ${lists.nombredisplay[index].split(' ')[0].toUpperCase()} de su lista de contactos?',
+                                style:TextStyle(fontFamily: 'Poppins'),
+                              ),
+                              SizedBox(height: SizeConfig.resizeHeight(4),),
+                              Text(
+                                'Mantenga el boton presionado.',
+                                style:TextStyle(fontFamily: 'Poppins'),
+                              ),
+                              SizedBox(height: SizeConfig.resizeHeight(25),),
+                              Center( // boton de borrar
+                                child: Container(
+                                  width: SizeConfig.resizeWidth(150),
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                                    color: Colors.red[400],
+                                    onLongPress: (){ //accion del boton borrar
+                                      
+                                      model.borrarContacto(tel, context);
+                                      Navigator.pop(context);
+                                    },
+                                    onPressed: null,
+                                    child: Icon(Icons.delete_forever, color: Colors.white,))
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -528,7 +550,7 @@ class _MainCarouselContactosState extends State<MainCarouselContactos> {
                 color: lists.contactos[tel]['isSelected'] == true 
                 ?Colors.red[400]
                 :Colors.grey[300],
-                size: 30.0,
+                size: SizeConfig.resizeHeight(30),
               ),
             ),
           ),

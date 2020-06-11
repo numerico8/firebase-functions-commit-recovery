@@ -13,6 +13,7 @@ import 'package:pimpineo_v1/viewmodels/tarjeta_credito_model.dart';
 import 'package:pimpineo_v1/widgets/checkout_dialogs.dart';
 import 'package:pimpineo_v1/services/helpers.dart';
 import 'package:provider/provider.dart';
+import 'package:pimpineo_v1/services/size_config.dart';
 
 
 
@@ -88,13 +89,13 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                 style: TextStyle(
                     color: Colors.blue[800],
                     fontFamily: 'Poppins',
-                    fontSize: 22.0)),
+                    fontSize: SizeConfig.resizeHeight(22))),
             leading: IconButton(  // boton de atras
               icon: Padding(
                 padding: EdgeInsets.only(left: 5.0),
                 child: Icon(
                   Icons.arrow_back_ios,
-                  size: 30.0,
+                  size: SizeConfig.resizeHeight(30),
                   color: Colors.blue[800],
                 ),
               ),
@@ -133,7 +134,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                             style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 18,
+                                  fontSize: SizeConfig.resizeHeight(18),
                                   fontFamily: 'Poppins'),
                             children: <TextSpan>[
                               TextSpan( // numero
@@ -141,7 +142,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                                 style: TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 18,
+                                      fontSize: SizeConfig.resizeHeight(18),
                                       fontFamily: 'Poppins'),  
                               ),
                             ]  
@@ -158,12 +159,12 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                                 'Usar Credito Disponible:',
                                  style: TextStyle(
                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
+                                    fontSize: SizeConfig.resizeHeight(18),
                                    fontFamily: 'Poppins'),
                               ),
-                              SizedBox(width: 10.0),
+                              SizedBox(width: SizeConfig.resizeHeight(10)),
                               Container( //switch
-                                height: 30,
+                                height: SizeConfig.resizeHeight(30),
                                 child: switchStatus(user) //desabilita la posibilidad de usar el credito ya que se esta haciendo una compra de credito
                                 ?Transform.scale(
                                     scale: 0.8,
@@ -273,7 +274,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                       ],
                     )
                   ),
-                  SizedBox(height: 10.0,),
+                  SizedBox(height: SizeConfig.resizeHeight(10),),
                   Center( //TOTAL A PAGAR
                     child: Container( // total a pagar
                       padding: EdgeInsets.all(5.0),
@@ -288,13 +289,13 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                             style: TextStyle(
                               color:  Colors.white,
                               fontWeight: FontWeight.w600,
-                              fontSize: 20,
+                              fontSize: SizeConfig.resizeHeight(20),
                               fontFamily: 'Poppins'),
                             children: <TextSpan>[
                               TextSpan(
                                 text: '  \$' + totalApagar.toStringAsFixed(2),
                                 style: TextStyle(
-                                  fontSize: 32
+                                  fontSize: SizeConfig.resizeHeight(32)
                                 )
                               )
                             ]
@@ -310,7 +311,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                         children: <Widget>[
                           Container( //cupetino picker
                                   width: double.maxFinite,
-                                  height: 60.0,
+                                  height: SizeConfig.resizeHeight(60),
                                   alignment: Alignment.center,
                                   child: CupertinoPicker(
                                       backgroundColor: Colors.white,
@@ -327,7 +328,7 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                                       },
                                       children: model.getCardsInFileList(context)),
                                 ),
-                          SizedBox(height:10.0),
+                          SizedBox(height:SizeConfig.resizeHeight(10)),
                           Container(//credit card module
                             child: _selectedCard == 0
                                ? Column( // tarjeta de credito con el boton de comprar
@@ -680,13 +681,13 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                                          _saveCard = !_saveCard;
                                        });
                                      },
-                                     contentPadding: EdgeInsets.symmetric(horizontal: 14.0),
+                                     contentPadding: EdgeInsets.symmetric(horizontal: SizeConfig.resizeWidth(14)),
                                      leading: _saveCard == false 
                                      ?Icon(Icons.check_box_outline_blank)
                                      :Icon(Icons.check_box, color: Colors.green,),
                                      title: _saveCard == false
-                                     ?Text('Desea salvar esta tarjeta de credito?', style: TextStyle(color: Colors.grey[600] ,fontFamily: 'Poppins'),)
-                                     :Text('Si, deseo salvar esta tarjeta.', style: TextStyle(color: Colors.grey[900] ,fontFamily: 'Poppins'),),
+                                     ?Text('Desea salvar esta tarjeta de credito?', style: TextStyle(color: Colors.grey[600] ,fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(16)),)
+                                     :Text('Si, deseo salvar esta tarjeta.', style: TextStyle(color: Colors.grey[900] ,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(16)),),
                                    ),
                                    FlatButton( //boton de comprar con nueva tarjeta en el modulo de la tarjeta de credito
                                      onPressed: () async {
@@ -911,11 +912,11 @@ class _CreditCardPurchaseUIState extends State<CreditCardPurchaseUI> {
                 children: <Widget>[
                   Icon(Icons.check, color:Colors.green,size: 60,),
                   SizedBox(height: 5),
-                  Text('La transaccion ha sido existosa.', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins'),),
+                  Text('La transaccion ha sido existosa.', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(14)),),
                   SizedBox(height: 5),
-                  Text('Gracias por su compra!', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins'),),
+                  Text('Gracias por su compra!', style: TextStyle(color: Colors.blue[800],fontFamily: 'Poppins',fontSize: SizeConfig.resizeHeight(14)),),
                   SizedBox(height: 5),
-                  Text('Equipo de Pimpineo', style: TextStyle(color: Colors.blue[800],fontFamily: 'Pacifico',fontSize: 20),), 
+                  Text('Equipo de Pimpineo', style: TextStyle(color: Colors.blue[800],fontFamily: 'Pacifico',fontSize: SizeConfig.resizeHeight(20)),), 
                   SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
