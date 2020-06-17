@@ -9,20 +9,9 @@ class AppTheme{
     primaryColor: Colors.blue[800],
     accentColor: Colors.lightBlue[100],
     scaffoldBackgroundColor: Colors.white,
-    textTheme: textTheme,
   );
 
 
-  static final TextTheme textTheme = TextTheme(
-    title: titleStyle,
-    subtitle: subtitleStyle,
-    button: buttonStyle,
-    headline: headlineStyle,
-    display1: display1Style,
-  );
-
-
-  
 
   static final TextStyle titleStyle = TextStyle();
 
