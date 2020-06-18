@@ -22,7 +22,7 @@ const stripe = new Stripe(functions.config().key.secret , {apiVersion: '2020-03-
 */
 export const createFirestoreUser = functions.https.onCall(async (data) => {
 
-        console.log('Creating new user'); // TO DELETE
+        console.log('Creating new user'); //show that the function was called to create new user 
 
         //stripe creation of a customer with th email as soon as the user is registering the first time
         //creating the customer in stripe
@@ -33,7 +33,8 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
         })
 
         const customer_id = stripe_customer.id;
-        console.log(stripe_customer.id);
+         
+        console.log(stripe_customer.id);  //show the new new customer stripe_id created
                
         
         try { 
@@ -60,10 +61,10 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
                 'accepted_termsAndCond': data['termsAndCond'],
                 'transaction_records' : []
             },{merge : true}).then((val)=>{
-                console.log(val.writeTime + 'User succesfully created.')
+                console.log(val.writeTime + 'User succesfully created.') //if the user was created succesfully
                 return 'successfull'
             }).catch(async (e) => {
-                console.log(e)
+                console.log('Error creating the user: ' + e) //show if there was an error creting the firestore user
                 await stripe.customers.del(customer_id)
                 return 'error'
             });
@@ -71,7 +72,7 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
             return customer_id
  
         } catch (error) {
-            console.log(error);
+            console.log('Error in the main function to create user: ' + error); //show if there was an error in the function in general 
             await stripe.customers.del(customer_id)
             return 'function error'
         }
@@ -81,12 +82,12 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
 
 // this is directly updtaing the user in the application local then calls this function and delete contact in the firestore
 export const updateContactList = functions.https.onCall(async (data) => {
-    console.log('Update contact list requested.');
+    console.log('Update contact list requested.'); //show that a contact list update was requested to delete or add users
     const result = admin.firestore().collection('users').doc(data['uid']).update({
         'contactos' : data['contactos'],
     })
     .catch((e) => {
-       console.log(e);
+       console.log('Error updating the contacts list: ' + e);
        return 'error';
     }); 
     return result;
@@ -96,11 +97,14 @@ export const updateContactList = functions.https.onCall(async (data) => {
 // this is the to make a payment with a credit card Stripe API comunication inside
 export const makePaymentCard = functions.https.onCall(async (data) => {
 
+    console.log('Make a payment function requested.'); //Show that the function to make a payment is running***************
+
     try {
 
       const newCredit = (parseFloat(data['amount'])/100) + parseFloat(data['credito'])
       
-      console.log(newCredit.toFixed(2))
+      console.log((parseFloat(data['amount'])/100).toFixed(2)) //shows amount to charge*****************************
+
       let paymentMethod;
 
       if(data['isSavedCard']){
@@ -138,6 +142,8 @@ export const makePaymentCard = functions.https.onCall(async (data) => {
       //idempotency key
       const idemKey = encrypt(Date.now()+data['stripe_id'])
 
+      console.log(idemKey); //show the idemkey for that transaction ***************************
+
       //creating actual payment
       const payment = await stripe.paymentIntents.create({
           amount : (Number(Number(data['amount']).toFixed(0))),
@@ -148,7 +154,10 @@ export const makePaymentCard = functions.https.onCall(async (data) => {
           confirm : true,
       }, {idempotencyKey : idemKey})
 
-            
+      
+      console.log('Payment Created'); //show the payment sent to stripe for that transaction ******************
+
+
       //Compra de Credito Record por esa razon ponemos el campo de credito en el record y el metodo de pago
       const newRecord = {
           'type' : data['type'], 
@@ -178,11 +187,14 @@ export const makePaymentCard = functions.https.onCall(async (data) => {
                       'payment_in_process' : payment
                   },
                   'credito' : data['capture'] === true ? newCredit : data['credito'],
-                  //si la trasaccion fue mandad a capturar desde el inicio porque lo que se esta comprando es credito entinces pone el record de las transacciones desde aqui
+                  //si la trasaccion fue mandada a capturar desde el inicio porque lo que se esta comprando es credito entinces pone el record de las transacciones desde aqui
                   'transaction_records' : data['capture'] === true ? admin.firestore.FieldValue.arrayUnion(newRecord) : data['listadoDeTransacciones'],
               },{merge : true})
+
+              console.log(saveCard); //Firestore object
               
               if(saveCard.writeTime.valueOf() !== null){
+                  console.log('Transaction succesfull.');
                   return true;
               }
               else{
@@ -195,10 +207,8 @@ export const makePaymentCard = functions.https.onCall(async (data) => {
               //meaning do not save card             
               if(data['isSavedCard'] === false){await stripe.paymentMethods.detach(paymentMethod.id)}
 
-              //write all new data in firestore with no card included
-              //const allPayments = (await stripe.paymentIntents.list({customer : data['stripe_id']})).data
-              
-              //write all new data in firestore with cards notincluded
+                            
+              //write all new data in firestore with cards not included
               const saveCard = await admin.firestore().collection('users').doc(data['uid']).set({
                   'payments' : {
                       'payment_in_process' : payment
@@ -206,18 +216,21 @@ export const makePaymentCard = functions.https.onCall(async (data) => {
                   'credito' : data['capture'] === true ? newCredit : data['credito'],
                   'transaction_records' : data['capture'] === true ? admin.firestore.FieldValue.arrayUnion(newRecord) : data['listadoDeTransacciones'],
               },{merge : true})
+
+              console.log(saveCard); //Firestore object
               
               if(saveCard.writeTime.valueOf() !== null){
+                  console.log('Transaction succesfull.');
                   return true;
               }
               else{
-                  console.log('There has been an error saving the data in Firestore')
+                  console.log('There has been an error saving the data in Firestore.')
                   return false
               }
           }
 
     } catch (error) {
-        console.log('BP 5')
+        console.log('There was an error in the function to makePayment.')
         console.log(error)
         return false;
     }
@@ -229,21 +242,21 @@ export const makePaymentCard = functions.https.onCall(async (data) => {
 export const processPaymentCard = functions.https.onCall(async (data) => {
     /**Toma el ultimo record de pago de este  uid y lo pasa en la data lo que significa que este es el 
      * ID del cargo que va a ser cobrado ademas se pasa el nuevo amount en la data y ahi se cobra */
+
+    console.log('Process payment was called since the RECHARGE was succesfully sent.'); //show that paymnet is being processed
+
     try {
         
-       // let paymentList : []
         let payment:any
 
         function updateList(datax:any){
             payment = datax.payments.payment_in_process
-          //  console.log(paymentList)
-           // payment = paymentList[paymentList.length - 1]
-            console.log(payment)
+            console.log(payment['id']) //show the payment that is being processed for this uid*******************
         }
         
         await admin.firestore().collection('users').doc(data['uid']).get().then(doc => {
             if(!doc.exists){
-                console.log('Documento no existe')
+                console.log('Document doesnt exist.') //doc doesnt exist **************
             }else{
                 updateList(doc.data())
             }
@@ -251,17 +264,23 @@ export const processPaymentCard = functions.https.onCall(async (data) => {
 
 
         if(payment['status'] === "requires_capture"){
-          console.log('BP1')
+
+          console.log('Capture required: '+payment['status']) //shows the status of the payment*******************
+          console.log('Amount to capture: '+payment['amount']/100) //shows the amount to capture*******************
+
           const capturedPayment = await stripe.paymentIntents.capture(
               payment['id'], {amount_to_capture : (Number(Number(data['amount']).toFixed(0))),},
           )
-          console.log('BP2')
+
+          console.log(capturedPayment.status) //show status of the captured payment *************************
+
+        //this is to create the record
           if(capturedPayment.status !== 'succeeded'){
-              console.log('BP3')
+              console.log(capturedPayment.status)
               return capturedPayment.status;
           }else{
-
-            console.log('BP4')
+            
+            console.log('Captured Payment: '+ payment['id']) //shows the status of the payment
             //los telefonos recargados se les va a pasar por la data y crea un string que se va a porner para mostrar en el record
               let telefonosRecargadosString = ''
               const telefonosRecargados: any[] = data['telefonosRecargados']
@@ -290,14 +309,16 @@ export const processPaymentCard = functions.https.onCall(async (data) => {
                   console.log('There has been an error saving the data in Firestore')
               }
 
+              console.log('charge has been captured successfully') 
               return 'charge has been captured successfully'
           }
         }else{
+          console.log('No charge to capture')
           return 'no charge to capture'
         }
         
     } catch (error) {
-        console.log(error.message)
+        console.log('Error running the cloud function.' + error.message)
         return 'Error running the cloud function.'
     }
     
@@ -307,6 +328,8 @@ export const processPaymentCard = functions.https.onCall(async (data) => {
  
 // this is the function comunicating with DT One API recharge 
 export const enviarRecarga = functions.https.onCall(async (data) => {
+
+    console.log('Function enviarRecarga requested: ' + data['telefono']) //show that the function is running
     /*
       la data que entra en esta function esta escrita como sigue: json file con los contactos que se requiere recargar ademas de
       los datos del usuario que esta enviando la recarga.
@@ -320,12 +343,14 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
     const the_key_as_string = String(the_key_as_number);
     const tomd5 = APILogin + token + the_key_as_string  // we have the login and the account token
     const md5_variable = encrypt(tomd5);
+    const telefonoLimpio = String(data['telefono']).replace(' ','').replace('-','').replace('(','').replace(')','');
 
-    console.log(data['telefono'])
-     
-    const url = 'https://airtime-api.dtone.com/cgi-bin/shop/topup?login='+APILogin+'&key='+the_key_as_string+'&md5='+md5_variable+'&action=msisdn_info&destination_msisdn='+data['telefono']
+    console.log('Telefono limpio: ' + telefonoLimpio) //show that the function is running
+
+        
+    const url = 'https://airtime-api.dtone.com/cgi-bin/shop/topup?login='+APILogin+'&key='+the_key_as_string+'&md5='+md5_variable+'&action=msisdn_info&destination_msisdn='+telefonoLimpio
   
-    console.log(url)
+    console.log(url) //show the url that was created for the request
     
      try {
 
@@ -336,6 +361,7 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
         function httpsRequest(path:string){
             return new Promise((resolve) => https.get(path, (response) => {
                 response.on('data', (chunk) => {
+                   console.log(chunk.toString()); 
                    response_body = chunk.toString();
                 }).on('end',()=>{
                 if(response_body.includes('Transaction successful') === true){
@@ -351,12 +377,12 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
         }
         
         const finalResult = await httpsRequest(url) 
-        console.log(finalResult)
+        console.log('Response from API DT ONE: '+finalResult) //shows the reponse from the API DT ONE
            
         return finalResult
         
      } catch (error) {
-        console.log(error)
+        console.log('There was an error with the function to recharge: '+error) //show the error
         return 'Error'
      }
 
@@ -365,6 +391,8 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
 //this is the function to delete any payment method in stripe and firestore as per cusotmer request
 export const deletePaymentMethod = functions.https.onCall(async (data) => {
 
+    console.log('Delete Payment Method function running.')
+  
 try {
     
    await stripe.paymentMethods.detach(data['pmID'])
@@ -379,11 +407,12 @@ try {
            'payment_methods' : savedCards.data
        }
    },{merge:true})
-
+   
+   console.log('Payment Method deleted succedfully.')
    return true;
 
 } catch (error) {
-    console.log(error)
+    console.log('There was an error in the function: '+error)
     return false;        
 }
    
@@ -421,28 +450,4 @@ export const scheduleFirestoreExport = functions.pubsub.schedule('every 24 hours
 
 
 
-
-
-
-
-
-
-
-
-
-//TODO create function to add new contacts and delete contacts ----DONE
-//TODO create function to update credit when transfered or credit bought ----DONE
-//TODO create function to enviar dinero system ----DONE
-//TODO create functions for the notifications system and confirmation numbers ----DONE
-//TODO create function to comunicate with API to buy "recarga" ----DONE 
-
-
-
-// **** this is a trigger that can be used once a user is created
-// export const createFSUser = functions.auth.user().onCreate(async (user) => {
-//     await admin.firestore().collection('users').add({
-//         'test' : user.uid,
-//         'test1' : 'two',
-//     });
-// });
 

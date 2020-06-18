@@ -103,8 +103,8 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                 child: Padding(
                 padding: EdgeInsets.only(left: SizeConfig.resizeWidth(20), right: SizeConfig.resizeWidth(20), top: SizeConfig.resizeHeight(15)),
                 child: Container(
-                  padding: EdgeInsets.only(right: SizeConfig.resizeWidth(14), left: SizeConfig.resizeWidth(14), top: SizeConfig.resizeHeight(10)),
                   width: double.infinity,
+                  //height: boxHeight,
                   decoration: BoxDecoration( //box shadow with the registration form
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.0),
@@ -118,214 +118,218 @@ class _RegistrarseUSState extends State<RegistrarseUS> {
                             offset: Offset(0.0, -10.0),
                             blurRadius: 15.0)
                       ]),
-                  child: model.state == ViewState.Busy
-                  ? Container(
-                    width: double.infinity,
-                    height: boxHeight,
-                    child: Center(
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        child: Stack(
-                      children: <Widget>[
-                        Center(
-                          child: CircleAvatar(
-                            radius: 38,
-                            backgroundColor: Colors.blue[800],
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 4.0),
-                              child: Text(
-                                'P',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Pacifico',
-                                  fontSize: 38
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: SizedBox(
-                            height: 60,
-                            width: 60,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 5,
-                              valueColor: AlwaysStoppedAnimation(Colors.blue[800]),
-                              backgroundColor: Colors.white,
-                        ),
-                          ),)
-                      ],
-                     ),
-                    )),
-                  ) 
-                  : Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        TextFormField(//nombre
-                          keyboardType: TextInputType.text,
-                          validator: _validator.validateName,
-                          style: TextStyle(fontFamily: 'Poppins'),
-                          onChanged: (value){
-                            this._nombre = value;
-                          },
-                          decoration: InputDecoration(
-                            hintText: 'Nombre',
-                            hintStyle:
-                                TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
-                          ),
-                        ),
-                        TextFormField(//contrasena
-                          onChanged: (val){
-                            this._contrasena = val;
-                          },
-                          keyboardType: TextInputType.text,
-                          validator: _validator.validatePassword,
-                          style: TextStyle(fontFamily: 'Poppins'),
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: 'Contrasena',
-                            hintStyle:
-                                TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
-                          ),
-                        ),
-                        TextFormField(//confirmar contrasena
-                          keyboardType: TextInputType.text,
-                          validator: _validator.validateConfirmPassword,
-                          style: TextStyle(fontFamily: 'Poppins'),
-                          onChanged: (val) {
-                          }, // tapcontrasenacallback,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: 'Confirmar Contrasena',
-                            hintStyle:
-                                TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
-                          ),
-                        ),
-                        TextFormField(//telefono 
-                          initialValue: '+1-',
-                          keyboardType: TextInputType.phone,
-                          validator: _validator.validatePhoneUS,
-                          style: TextStyle(fontFamily: 'Poppins'),
-                          onChanged: (val) {
-                            this._telefono = val; // if for some reson I would like to clean the saved phoen number a.replaceAll('+', '').replaceAll('-', '');
-                          }, // tapcontrasenacallback,
-                          decoration: InputDecoration(
-                            hintText: 'Numero de Telefono(ejemplo):11234567890',
-                            hintStyle:
-                                TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
-                          ),
-                          inputFormatters: [ //mask that creates the dashes
-                            TextFormatter(
-                              separator: '-',
-                              mask: '+1-xxx-xxx-xxxx'
-                            )
-                          ],
-                        ),
-                        TextFormField(//correo electronico
-                          keyboardType: TextInputType.emailAddress,
-                          validator: _validator.validateEmail,
-                          style: TextStyle(fontFamily: 'Poppins'),
-                          onChanged: (val) {
-                            this._correo = val;
-                          }, // tapcontrasenacallback,
-                          decoration: InputDecoration(
-                            hintText: 'Correo Electronico(ejemplo):correo@email.com',
-                            hintStyle:
-                                TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
-                          ),
-                        ),
-                        SizedBox(height: SizeConfig.resizeHeight(20),),
-                        FlatButton( //button registrar
-                          splashColor: Colors.white,
-                          highlightColor: Colors.white,
-                          onPressed: () async {
-                           if(_formKey.currentState.validate()){
-                             var _result = await model.registerUserButton(context,this._correo, this._contrasena, this._nombre, this.pais, this._telefono, this._credito);
-                             if(_result.contains('registrado')){ //la palabra registrado no viene del modelo sino del authenticationservice
-                               Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route,  (Route<dynamic> route) => false);
-                             }
-                             else{
-                               showDialog( 
-                                 context: context,
-                                 builder: (context){
-                                   return customAlertError(
-                                     text: _result,
-                                   ); 
-                                });
-                             }
-                           } 
-                          },
-                          child: Center(
-                            child: Container(
-                              width: SizeConfig.resizeWidth(200),
-                              height: SizeConfig.resizeHeight(40),
-                              child: Center(
-                                  child: Text(
-                                'Registrarse',
-                                style: TextStyle(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(right: SizeConfig.resizeWidth(14), left: SizeConfig.resizeWidth(14), top: SizeConfig.resizeHeight(10)),
+                    child: model.state == ViewState.Busy
+                    ? Container(
+                      width: double.infinity,
+                      height: boxHeight,
+                      child: Center(
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: CircleAvatar(
+                              radius: 38,
+                              backgroundColor: Colors.blue[800],
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 4.0),
+                                child: Text(
+                                  'P',
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: 'Poppins',
-                                    fontSize: SizeConfig.resizeHeight(20)),
-                              )),
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    Colors.blue[600],
-                                    Colors.blue[900]
-                                  ]),
-                                  borderRadius: BorderRadius.circular(5.0)),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: SizeConfig.resizeHeight(5),),
-                        FlatButton( //button registrar con google
-                          splashColor: Colors.white,
-                          highlightColor: Colors.white,
-                          onPressed: () async {
-                            String result;
-                            result = await model.registrarseConGoogle(context);
-                            if(result.contains('registrado')){
-                              showDialog(barrierDismissible: false,context: context,builder: (context) =>  customAlert(text: 'Revise la bandeja de entrada de su correo GMAIL, click el enlace y cree su contrasena Pimpineo.',));
-                            }else{
-                              showDialog( 
-                                 context: context,
-                                 builder: (context){
-                                  return customAlertError(
-                                    text: result,
-                                  ); 
-                              });
-                            }
-                          },
-                          child: Center(
-                            child: Container(
-                              width: SizeConfig.resizeWidth(200),
-                              height: SizeConfig.resizeHeight(40),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Image.asset('images/google3.png'),
-                                  SizedBox(width:2),
-                                  Text(
-                                    ' para registrarse',
-                                    style: TextStyle(
-                                            color: Colors.grey[800],
-                                            fontFamily: 'Solway',
-                                            fontSize: SizeConfig.resizeHeight(16)),
+                                    fontFamily: 'Pacifico',
+                                    fontSize: 38
                                   ),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey[300],width: 3),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50.0)
                                 ),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: SizeConfig.resizeHeight(15),), 
-                      ],
+                          Center(
+                            child: SizedBox(
+                              height: 60,
+                              width: 60,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 5,
+                                valueColor: AlwaysStoppedAnimation(Colors.blue[800]),
+                                backgroundColor: Colors.white,
+                          ),
+                            ),)
+                        ],
+                       ),
+                      )),
+                    ) 
+                    : Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextFormField(//nombre
+                            keyboardType: TextInputType.text,
+                            validator: _validator.validateName,
+                            style: TextStyle(fontFamily: 'Poppins'),
+                            onChanged: (value){
+                              this._nombre = value;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Nombre',
+                              hintStyle:
+                                  TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
+                            ),
+                          ),
+                          TextFormField(//contrasena
+                            onChanged: (val){
+                              this._contrasena = val;
+                            },
+                            keyboardType: TextInputType.text,
+                            validator: _validator.validatePassword,
+                            style: TextStyle(fontFamily: 'Poppins'),
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: 'Contrasena',
+                              hintStyle:
+                                  TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
+                            ),
+                          ),
+                          TextFormField(//confirmar contrasena
+                            keyboardType: TextInputType.text,
+                            validator: _validator.validateConfirmPassword,
+                            style: TextStyle(fontFamily: 'Poppins'),
+                            onChanged: (val) {
+                            }, // tapcontrasenacallback,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: 'Confirmar Contrasena',
+                              hintStyle:
+                                  TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
+                            ),
+                          ),
+                          TextFormField(//telefono 
+                            initialValue: '+1-',
+                            keyboardType: TextInputType.phone,
+                            validator: _validator.validatePhoneUS,
+                            style: TextStyle(fontFamily: 'Poppins'),
+                            onChanged: (val) {
+                              this._telefono = val; // if for some reson I would like to clean the saved phoen number a.replaceAll('+', '').replaceAll('-', '');
+                            }, // tapcontrasenacallback,
+                            decoration: InputDecoration(
+                              hintText: 'Numero de Telefono(ejemplo):11234567890',
+                              hintStyle:
+                                  TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
+                            ),
+                            inputFormatters: [ //mask that creates the dashes
+                              TextFormatter(
+                                separator: '-',
+                                mask: '+1-xxx-xxx-xxxx'
+                              )
+                            ],
+                          ),
+                          TextFormField(//correo electronico
+                            keyboardType: TextInputType.emailAddress,
+                            validator: _validator.validateEmail,
+                            style: TextStyle(fontFamily: 'Poppins'),
+                            onChanged: (val) {
+                              this._correo = val;
+                            }, // tapcontrasenacallback,
+                            decoration: InputDecoration(
+                              hintText: 'Correo Electronico(ejemplo):correo@email.com',
+                              hintStyle:
+                                  TextStyle(color: Colors.grey,fontFamily: 'Poppins', fontSize: SizeConfig.resizeHeight(12)),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.resizeHeight(20),),
+                          FlatButton( //button registrar
+                            splashColor: Colors.white,
+                            highlightColor: Colors.white,
+                            onPressed: () async {
+                             if(_formKey.currentState.validate()){
+                               var _result = await model.registerUserButton(context,this._correo, this._contrasena, this._nombre, this.pais, this._telefono, this._credito);
+                               if(_result.contains('registrado')){ //la palabra registrado no viene del modelo sino del authenticationservice
+                                 Navigator.pushNamedAndRemoveUntil(context, LobbyUS.route,  (Route<dynamic> route) => false);
+                               }
+                               else{
+                                 showDialog( 
+                                   context: context,
+                                   builder: (context){
+                                     return customAlertError(
+                                       text: _result,
+                                     ); 
+                                  });
+                               }
+                             } 
+                            },
+                            child: Center(
+                              child: Container(
+                                width: SizeConfig.resizeWidth(200),
+                                height: SizeConfig.resizeHeight(40),
+                                child: Center(
+                                    child: Text(
+                                  'Registrarse',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Poppins',
+                                      fontSize: SizeConfig.resizeHeight(20)),
+                                )),
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Colors.blue[600],
+                                      Colors.blue[900]
+                                    ]),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.resizeHeight(5),),
+                          FlatButton( //button registrar con google
+                            splashColor: Colors.white,
+                            highlightColor: Colors.white,
+                            onPressed: () async {
+                              String result;
+                              result = await model.registrarseConGoogle(context);
+                              if(result.contains('registrado')){
+                                showDialog(barrierDismissible: false,context: context,builder: (context) =>  customAlert(text: 'Revise la bandeja de entrada de su correo GMAIL, click el enlace y cree su contrasena Pimpineo.',));
+                              }else{
+                                showDialog( 
+                                   context: context,
+                                   builder: (context){
+                                    return customAlertError(
+                                      text: result,
+                                    ); 
+                                });
+                              }
+                            },
+                            child: Center(
+                              child: Container(
+                                width: SizeConfig.resizeWidth(200),
+                                height: SizeConfig.resizeHeight(40),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Image.asset('images/google3.png'),
+                                    SizedBox(width:2),
+                                    Text(
+                                      ' para registrarse',
+                                      style: TextStyle(
+                                              color: Colors.grey[800],
+                                              fontFamily: 'Solway',
+                                              fontSize: SizeConfig.resizeHeight(16)),
+                                    ),
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey[300],width: 3),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(50.0)
+                                  ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: SizeConfig.resizeHeight(10),), 
+                        ],
+                      ),
                     ),
                   ),
                 ),
