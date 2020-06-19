@@ -22,7 +22,7 @@ const stripe = new Stripe(functions.config().key.secret , {apiVersion: '2020-03-
 */
 export const createFirestoreUser = functions.https.onCall(async (data) => {
 
-        console.log('Creating new user'); //show that the function was called to create new user 
+        console.log('Creating new user: '+data['uid']); //show that the function was called to create new user 
 
         //stripe creation of a customer with th email as soon as the user is registering the first time
         //creating the customer in stripe
@@ -82,7 +82,7 @@ export const createFirestoreUser = functions.https.onCall(async (data) => {
 
 // this is directly updtaing the user in the application local then calls this function and delete contact in the firestore
 export const updateContactList = functions.https.onCall(async (data) => {
-    console.log('Update contact list requested.'); //show that a contact list update was requested to delete or add users
+    console.log('Update contact list requested: '+data['uid']); //show that a contact list update was requested to delete or add users
     const result = admin.firestore().collection('users').doc(data['uid']).update({
         'contactos' : data['contactos'],
     })
@@ -97,7 +97,7 @@ export const updateContactList = functions.https.onCall(async (data) => {
 // this is the to make a payment with a credit card Stripe API comunication inside
 export const makePaymentCard = functions.https.onCall(async (data) => {
 
-    console.log('Make a payment function requested.'); //Show that the function to make a payment is running***************
+    console.log('Make a payment function requested: '+data['uid']); //Show that the function to make a payment is running***************
 
     try {
 
@@ -243,7 +243,7 @@ export const processPaymentCard = functions.https.onCall(async (data) => {
     /**Toma el ultimo record de pago de este  uid y lo pasa en la data lo que significa que este es el 
      * ID del cargo que va a ser cobrado ademas se pasa el nuevo amount en la data y ahi se cobra */
 
-    console.log('Process payment was called since the RECHARGE was succesfully sent.'); //show that paymnet is being processed
+    console.log('Process payment was called since the RECHARGE was succesfully sent: ' + data['uid']); //show that paymnet is being processed
 
     try {
         
@@ -361,7 +361,7 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
         function httpsRequest(path:string){
             return new Promise((resolve) => https.get(path, (response) => {
                 response.on('data', (chunk) => {
-                   console.log(chunk.toString()); 
+                   //console.log(chunk.toString()); 
                    response_body = chunk.toString();
                 }).on('end',()=>{
                 if(response_body.includes('Transaction successful') === true){
@@ -391,7 +391,7 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
 //this is the function to delete any payment method in stripe and firestore as per cusotmer request
 export const deletePaymentMethod = functions.https.onCall(async (data) => {
 
-    console.log('Delete Payment Method function running.')
+    console.log('Delete Payment Method function running: '+data['uid']) //show that the function is running
   
 try {
     
@@ -420,6 +420,7 @@ try {
 
 //function that set up and schedule daily backup
 export const scheduleFirestoreExport = functions.pubsub.schedule('every 24 hours').onRun((context) => {
+    console.log('Backup running'); // show that the back up is running
     const projectId = process.env.GCP_PROJECT || process.env.GCLOUD_PROJECT;
     const databaseName = client.databasePath(projectId, '(default)');
   
@@ -429,7 +430,7 @@ export const scheduleFirestoreExport = functions.pubsub.schedule('every 24 hours
       // Leave collectionIds empty to export all collections
       // or set to a list of collection IDs to export,
       // collectionIds: ['users', 'posts']
-      collectionIds: ['users']
+      collectionIds: []
       })
     .then((responses: any[]) => {
       const response = responses[0];
