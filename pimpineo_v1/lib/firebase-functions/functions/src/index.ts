@@ -361,7 +361,7 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
         function httpsRequest(path:string){
             return new Promise((resolve) => https.get(path, (response) => {
                 response.on('data', (chunk) => {
-                   console.log(chunk.toString()); 
+                   //console.log(chunk.toString()); 
                    response_body = chunk.toString();
                 }).on('end',()=>{
                 if(response_body.includes('Transaction successful') === true){
@@ -391,7 +391,7 @@ export const enviarRecarga = functions.https.onCall(async (data) => {
 //this is the function to delete any payment method in stripe and firestore as per cusotmer request
 export const deletePaymentMethod = functions.https.onCall(async (data) => {
 
-    console.log('Delete Payment Method function running.')
+    console.log('Delete Payment Method function running.') //show that the function is running
   
 try {
     
@@ -420,6 +420,7 @@ try {
 
 //function that set up and schedule daily backup
 export const scheduleFirestoreExport = functions.pubsub.schedule('every 24 hours').onRun((context) => {
+    console.log('Backup running'); // show that the back up is running
     const projectId = process.env.GCP_PROJECT || process.env.GCLOUD_PROJECT;
     const databaseName = client.databasePath(projectId, '(default)');
   
