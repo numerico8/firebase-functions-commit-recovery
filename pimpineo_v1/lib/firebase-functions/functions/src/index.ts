@@ -430,7 +430,7 @@ export const scheduleFirestoreExport = functions.pubsub.schedule('every 24 hours
       // Leave collectionIds empty to export all collections
       // or set to a list of collection IDs to export,
       // collectionIds: ['users', 'posts']
-      collectionIds: ['users']
+      collectionIds: []
       })
     .then((responses: any[]) => {
       const response = responses[0];
